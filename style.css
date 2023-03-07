@@ -1,0 +1,58 @@
+body {
+    background-color: #8888;
+}
+
+
+#parent {
+    display: inline-block;
+position: relative;
+}
+
+#wave {
+    text-align: center;
+    position: absolute;
+    top: 2%;
+    left: 30%;
+}
+
+#timer {
+    text-align: center;
+    position: absolute;
+    top: 2%;
+    left: 45%;
+}
+
+#menu{
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: #726d6d;
+    z-index: 1;
+    opacity: 0.97;
+}
+
+#items-box{
+    position: inherit;
+    top: 15%;
+    left: 5%;
+    width: 90%;
+    height: 60%;
+    color: aliceblue;
+    z-index: 0;
+    display: grid;
+    grid-column: 4;
+    grid-row: 1;
+}
+
+.items {
+    align-items: center;
+    text-align: center;
+    background-color: #1a161688;
+    height: 60%;
+    width: auto;
+    opacity: 0.8;
+    margin: 5px;
+    border-radius: 5%;
+}

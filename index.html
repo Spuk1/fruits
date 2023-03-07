@@ -1,9 +1,39 @@
-<style>
-    body  {
-        background-color: #8888;
-    }
-</style>
-<canvas></canvas>
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="parent">
+        <h1 id="wave"></h1>
+        <h1  id="timer"></h1>
+        <canvas></canvas>
+        <div id="menu">
+            <h1 style="position: absolute; top: 1%; left: 2%;">Shop</h1>
+            <h1 id="wave"></h1>
+            <div id="items-box">
+                <div class="items" style="grid-column: 1; grid-row: 1;">
+                    <p id="item-name">item1</p>
+                </div>
+                <div class="items" style="grid-column: 2; grid-row: 1;">
+                    <p id="item-name">item2</p>
+                </div>
+                <div class="items" style="grid-column: 3; grid-row: 1;">
+                    <p id="item-name">item3</p>
+                    </div>
+                <div class="items" style="grid-column: 4; grid-row: 1;">
+                    <p id="item-name">item4</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<footer>
+<script src="waves.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js" integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="classes.js"></script>
 <script src="main.js"></script>
+</footer>
+</html>

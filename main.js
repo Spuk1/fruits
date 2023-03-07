@@ -1,13 +1,11 @@
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 canvas.width = 1024;
-canvas.height = 576;
+canvas.height = 600;
 
 c.fillRect(0,0, canvas.width, canvas.height);
 
-//Background Image
-const image = new Image();
-image.src = "./images/map.png";
+
 
 //Player Image
 const playerImageDown = new Image();
@@ -33,16 +31,20 @@ const background = new Sprite({
         x:-canvas.width /3,
         y: -canvas.height
     },
-    image: image
+    image: {
+        src: "./images/map.png"
+    }
 })
 
-
+// create player
 const player = new Sprite({
     position: {
         x:canvas.width /2 -50,
         y:canvas.height /2
     },
-    image: playerImageDown,
+    image: {
+        src: playerImageDown.src
+    },
     frames: {
         max: 4,
         hold:8
@@ -56,36 +58,36 @@ const player = new Sprite({
     }
 })
 
-const emby = new Sprite({
-    position:{
-        x:+100,
-        y:+70
-    },
-    sprites: {
-        up:embyImageSprite,
-        down:embyImageFront,
-        left:embyImageFront,
-        right:embyImageSprite
-    },
-    image:embyImageFront,
-    frames: {
-        max:4,
-        hold:8
-    }
-})
+//spawn Enemies
 
-const swordImage = new Image();
-swordImage.src = "./assets/sword.png";
+const enemies = []
 
-const sword = new WeaponMelee({
-    image: swordImage,
-    position: {
-        x: player.position.x,
-        y: player.position.y
-    },
-    damage: 20
-})
 
+
+// Weapon
+
+const weapons = [];
+swordImagesrc = "./assets/sword.png";
+
+const getSword = () => {
+    weapons.push(
+        new WeaponMelee({
+            slot: weapons.length,
+            image: {src: swordImagesrc},
+            position: {
+                x: player.position.x,
+                y: player.position.y
+            },
+            damage: 20
+        })
+    )
+}
+
+
+
+
+
+//Add Event listener Movement
 
 const keys = {
     w: {
@@ -138,11 +140,22 @@ addEventListener("keyup", (event) => {
 
 
 
+const checkHealth = (obj, i) => {
+    if (obj.hp <= 0){
+        enemies.splice(i,1)
+        console.log(enemies)
+    }
+}
 
-const animate = async() => {
+
+
+const animate = () => {
     window.requestAnimationFrame(animate);
     background.draw();
     player.draw();
+
+
+
     if (keys.w.pressed) {
         player.position.y -= 3;
         player.image = player.sprites.up;
@@ -169,18 +182,29 @@ const animate = async() => {
 
     }else  {player.animate = false;}
 
-    emby.draw()
-    emby.enmeyAI()
-    sword.draw()
-    
-    if(sword.isAttacking === false) {
-        sword.position = {
-            x: player.position.x - 20,
-            y: player.position.y - 20
+
+    //draw Enemies
+    for(let i=0;i<enemies.length;i++){
+        enemies[i].draw();
+        enemies[i].enmeyAI();
+        for(let j=0;j<weapons.length;j++){
+            weapons[j].getEnemyDist(enemies[i], i);
+        }
+        }
+
+    //draw Weapons
+    for(i=0;i<weapons.length;i++){
+        weapons[i].draw()
+        if(weapons[i].isAttacking === false) {
+            weapons[i].position = {
+                x: player.position.x + 60 * Math.cos(weapons[i].slot*(360/6)),
+                y: player.position.y+ 60 * Math.sin(weapons[i].slot*(360/6))
+            }
         }
     }
-    if(sword.onCooldown === false) {
-        sword.attack()}
-}
 
+    
+}
+wave1(1)
 animate();
+getSword();
