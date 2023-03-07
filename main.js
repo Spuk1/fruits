@@ -139,7 +139,7 @@ addEventListener("keyup", (event) => {
 
 
 
-const animate = () => {
+const animate = async() => {
     window.requestAnimationFrame(animate);
     background.draw();
     player.draw();
@@ -173,6 +173,14 @@ const animate = () => {
     emby.enmeyAI()
     sword.draw()
     
+    if(sword.isAttacking === false) {
+        sword.position = {
+            x: player.position.x - 20,
+            y: player.position.y - 20
+        }
+    }
+    if(sword.onCooldown === false) {
+        sword.attack()}
 }
 
 animate();
