@@ -68,7 +68,7 @@ class WeaponMelee {
     this.image = image
     }
     draw(){
-        c.drawImage(this.image, this.position.x, this.position.y);
+        c.drawImage(this.image, player.position.x +20, player.position.y + 20);
     }
     attack(){
 

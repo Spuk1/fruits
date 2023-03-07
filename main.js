@@ -22,7 +22,6 @@ playerImageLeft.src = "./images/test_character/playerLeft.png"
 const playerImageRight = new Image();
 playerImageRight.src = "./images/test_character/playerRight.png"
 
-
 const embyImageFront = new Image();
 embyImageFront.src = "./images/enemies/EmbyFront.png";
 
@@ -76,13 +75,13 @@ const emby = new Sprite({
 })
 
 const swordImage = new Image();
-swordImage.src = "./assets/sword.webp";
+swordImage.src = "./assets/sword.png";
 
 const sword = new WeaponMelee({
     image: swordImage,
     position: {
-        x: player.position.x + 20,
-        y: player.position.y + 20
+        x: player.position.x,
+        y: player.position.y
     },
     damage: 20
 })
