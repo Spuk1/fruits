@@ -3,7 +3,7 @@
 
 const sword = new WeaponShop({
     name: "Sword",
-    image: {src: "./assets/sword.png"},
+    image: {src: "assets/sword.png"},
     damage: 20,
     meleeDmg: +2,
     Speed: +3,
@@ -12,7 +12,7 @@ const sword = new WeaponShop({
 
 const dagger = new WeaponShop({
     name: "Dagger",
-    image: {src: "./assets/dagger.svg"},
+    image: {src: "assets/dagger.svg"},
     damage: 20,
     attackSpeed: 2000,
     Speed: +3,

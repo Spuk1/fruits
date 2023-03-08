@@ -3,6 +3,11 @@ const c = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 600;
 
+const roundTime = 10
+var currentWave = 1
+const waves = [wave1, wave2]
+
+
 c.fillRect(0,0, canvas.width, canvas.height);
 
 
@@ -60,7 +65,6 @@ const player = new Sprite({
 
 //spawn Enemies
 
-const enemies = []
 
 
 

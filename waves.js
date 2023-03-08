@@ -1,5 +1,4 @@
-const roundTime = 10
-
+const enemies = []
 
 const spawnEnemyEmby = (amount) => {
     for(i = 0; i<amount;i++) {
@@ -29,9 +28,6 @@ const spawnEnemyEmby = (amount) => {
 }
 
 
-const wait = async(time) => {
-    ;
-}
 
 const wave1 = async(diff) => {
     time = 0;
@@ -48,9 +44,28 @@ const wave1 = async(diff) => {
     enemies.splice(0,enemies.length)
     getShopItems();
     document.getElementById("menu").style.display = "inline-block"
-    
+    currentWave += 1
+}
+
+const wave2 = async(diff) => {
+    document.getElementById("menu").style.display = "none"
+    time = 0;
+    spawnEnemyEmby(2*diff)
+    document.getElementById("wave").innerHTML = "Wave" + currentWave
+    while(time <= roundTime) {
+        if (time %5 === 0) {
+            spawnEnemyEmby(2*diff)
+        }
+        document.getElementById("timer").innerHTML = roundTime -time;
+        await new Promise(r => setTimeout(r, 1000))
+        time++;
+    }
+    enemies.splice(0,enemies.length)
+    getShopItems();
+    document.getElementById("menu").style.display = "inline-block"
+    currentWave += 1
 }
 
 const nextWave = () => {
-    console.log("next Wave")
+    waves[currentWave-1](1)
 }
