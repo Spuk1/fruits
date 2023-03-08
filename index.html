@@ -8,25 +8,82 @@
         <h1 id="wave"></h1>
         <h1  id="timer"></h1>
         <canvas></canvas>
-        <div id="menu">
-            <h1 style="position: absolute; top: 1%; left: 2%;">Shop</h1>
-            <h1 id="wave"></h1>
+        <div id="menu" style="display: none;">
+            <h1 style="position: absolute; top: 1%; left: 2%; color: aliceblue;">Shop</h1>
+            <h1 style="position: absolute; top: 1%; left: 45%; color: aliceblue;" id="money">234</h1>
             <div id="items-box">
-                <div class="items" style="grid-column: 1; grid-row: 1;">
-                    <p id="item-name">item1</p>
-                </div>
-                <div class="items" style="grid-column: 2; grid-row: 1;">
-                    <p id="item-name">item2</p>
-                </div>
-                <div class="items" style="grid-column: 3; grid-row: 1;">
-                    <p id="item-name">item3</p>
+                <div class="items">
+                    <div style="display: grid;">
+                        <p style="grid-column: 2; grid-row: 1; text-align: left; margin-left: 0;" id="item1_name">Sword</p>
+                        <img class="item-images" src="assets/sword.png" id="item1_image">
                     </div>
-                <div class="items" style="grid-column: 4; grid-row: 1;">
-                    <p id="item-name">item4</p>
+                    <p class="stats" id="item1_stat1">blabla: +3</p>
+                    <p class="stats" id="item1_stat2">aaaa: -1</p>
+                    <p class="stats" id="item1_stat3" >sadf</p>
+                    <p class="stats" id="item1_stat4">werrwd</p>
+                </div>
+                <div class="items" >
+                    <div style="display: grid;">
+                    <p style="grid-column: 2; grid-row: 1; text-align: left; margin-left: 0;" id="item2_name">Sword</p>
+                    <img class="item-images"  src="assets/sword.png" id="item2_image">
+                    </div>
+                    <p class="stats" id="item2_stat1">blabla: +3</p>
+                    <p class="stats" id="item2_stat2">aaaa: -1</p>
+                    <p class="stats" id="item2_stat3">sadf</p>
+                    <p class="stats" id="item2_stat4">werrwd</p>
+                </div>
+                <div class="items">
+                    <div style="display: grid;">
+                    <p style="grid-column: 2; grid-row: 1; text-align: left; margin-left: 0;" id="item3_name">Sword</p>
+                    <img class="item-images"  src="assets/sword.png" id="item3_image">
+                    </div>
+                    <p style="grid-column: 1; grid-row: 2;" class="stats" id="item3-stat1">blabla: +3</p>
+                    <p style="grid-column: 1; grid-row: 3;" class="stats" id="item3-stat2">aaaa: -1</p>
+                    <p style="grid-column: 1; grid-row: 4;" class="stats" id="item3-stat3">sadf</p>
+                    <p  class="stats" id="item3-stat4">werrwd</p>
+                    </div>
+                <div class="items">
+                    <div style="display: grid;">
+                    <p style="grid-column: 2; grid-row: 1; text-align: left; margin-left: 0;" id="item4_name">Sword</p>
+                    <img class="item-images"  src="assets/sword.png" id="item4_image">
+                    </div>
+                    <div >
+                        <p  class="stats" id="item4_stat1">blabla: +3</p>
+                        <p  class="stats" id="item4_stat2">aaaa: -1</p>
+                        <p  class="stats" id="item4_stat3">sadf</p>
+                        <p  class="stats" id="item4_stat4">werrwd</p>
+                    </div>
+                    
                 </div>
             </div>
-        </div>
+            <div id="char_info_box">
+                <h1 style="color: aliceblue; text-align: center; font-size: 24px;">Stats</h1>
+            </div>
+            <h1 id="Inv-header">Items</h1>
+            <div id="inventory">
+                <img class="inv-images" src="assets/sword.png">
+                <img class="inv-images" src="assets/sword.png">
+                <img class="inv-images" src="assets/sword.png">
+                <img class="inv-images" src="assets/sword.png">
+                <img class="inv-images" src="assets/sword.png">
+                <img class="inv-images" src="assets/sword.png">
+                <img class="inv-images" src="assets/sword.png">
+                <img class="inv-images" src="assets/sword.png">
+                <img class="inv-images" src="assets/sword.png">
+                <img class="inv-images" src="assets/sword.png">
+                <img class="inv-images" src="assets/sword.png">
+                <img class="inv-images" src="assets/sword.png">
     </div>
+        <h1 id="weapons-header">Weapons</h1>
+        <div id="weapons">
+            <img class="inv-images" src="assets/sword.png">
+                <img class="inv-images" src="assets/sword.png">
+                <img class="inv-images" src="assets/sword.png">
+                <img class="inv-images" src="assets/sword.png">
+                <img class="inv-images" src="assets/sword.png">
+                <img class="inv-images" src="assets/sword.png">
+        </div>
+        <button id="GO-button" onclick="nextWave()">GO</button>
 
 </body>
 
