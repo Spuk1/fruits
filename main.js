@@ -3,7 +3,7 @@ const c = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 600;
 
-const roundTime = 10
+const roundTime = 1
 var currentWave = 1
 const waves = [wave1, wave2]
 
@@ -129,7 +129,7 @@ const checkHealth = (obj, i) => {
 }
 
 
-sword.buyWeapon()
+sword.buyItem()
 const animate = () => {
     window.requestAnimationFrame(animate);
     background.draw();

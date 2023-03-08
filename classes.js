@@ -128,30 +128,57 @@ class WeaponMelee {
         
     }
 
-
-    class WeaponShop {
+    class Item {
         constructor({
             name,
-            damage,
-            attackSpeed = 3000,
             image,
             meleeDmg,
             rangedDmg,
             Speed,
             hp,
-            lifesteal
+            lifesteal,
+            type
         }){
         this.name = name
-        this.damage = damage
-        this.attackSpeed = attackSpeed
         this.image = image
         this.meleeDmg = meleeDmg
         this.rangedDmg = rangedDmg
         this.Speed = Speed
         this.hp = hp
         this.lifesteal = lifesteal
+        this.type = type
         }
-        buyWeapon = () => {
+    }
+
+
+    class WeaponShop {
+        constructor({
+            name,
+            damage,
+            attackSpeed,
+            image,
+            meleeDmg,
+            rangedDmg,
+            Speed,
+            hp,
+            lifesteal,
+            type,
+            price
+        }){
+        this.name = name
+        this.image = image
+        this.damage = damage
+        this.attackSpeed = attackSpeed
+        this.meleeDmg = meleeDmg
+        this.rangedDmg = rangedDmg
+        this.Speed = Speed
+        this.hp = hp
+        this.lifesteal = lifesteal
+        this.type = type
+        this.price = price
+        }
+        buyItem = () => {
+            if(this.type === "weapon") {
             ownedWeapons.push(new WeaponMelee ({
                 slot: ownedWeapons.length,
                 image: this.image,
@@ -162,6 +189,23 @@ class WeaponMelee {
                 Speed: this.Speed,
                 hp: this.hp,
                 lifesteal: this.lifesteal
+            
             }))
+        } else {
+            items.push(new Item ({
+                image: this.image,
+                meleeDmg: this.meleeDmg,
+                rangedDmg: this.rangedDmg,
+                Speed: this.Speed,
+                hp: this.hp,
+                lifesteal: this.lifesteal
+            
+            }))
+
+        }
         }
 }
+
+
+
+

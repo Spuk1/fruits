@@ -49,6 +49,13 @@ const wave1 = async(diff) => {
 
 const wave2 = async(diff) => {
     document.getElementById("menu").style.display = "none"
+    for(let i=1;i<=4;i++) {
+        node = document.getElementById(`item${i}`)
+        while(node.firstChild){
+            node.removeChild(node.firstChild)
+    }
+    }
+    
     time = 0;
     spawnEnemyEmby(2*diff)
     document.getElementById("wave").innerHTML = "Wave" + currentWave

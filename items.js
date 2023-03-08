@@ -8,6 +8,9 @@ const sword = new WeaponShop({
     meleeDmg: +2,
     Speed: +3,
     rangedDmg: -3,
+    attackSpeed: 3000,
+    type: "weapon",
+    price: 22
 })
 
 const dagger = new WeaponShop({
@@ -17,8 +20,25 @@ const dagger = new WeaponShop({
     attackSpeed: 2000,
     Speed: +3,
     rangedDmg: -3,
+    lifeSteal: +1,
+    type: "weapon",
+    price: 25
 })
+
+const Bulldozer = new WeaponShop({
+    name: "Bulldozer",
+    image: {src: "assets/locket_item.png"},
+    Speed: -3,
+    rangedDmg: -3,
+    hp:+5,
+    meleeDmg: +1,
+    type: "item",
+    price: 37
+})
+
+
 const weapons = [sword,dagger]
-const chosen = [sword,dagger]
+const items = []
+const chosen = [sword,dagger,Bulldozer]
 
 const ownedWeapons = [];

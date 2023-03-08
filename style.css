@@ -52,6 +52,7 @@ position: relative;
 }
 
 .items {
+    position: relative;
     align-items: center;
     text-align: center;
     background-color: #1a1616c3;
@@ -62,9 +63,6 @@ position: relative;
     border-radius: 5%;
 }
 
-.items:hover{
-    opacity: 0.7;
-}
 
 .stats{
     margin-top: 0px;
@@ -141,5 +139,38 @@ position: relative;
 }
 
 #GO-button:hover{
+    opacity: 0.85;
+}
+
+#Reroll-button {
+    position: absolute;
+    top: 4.5%;
+    right:27%;
+    color: aliceblue;
+    border-radius: 5px;
+    width: 160px;
+    height: 45px;
+    background-color: #1a1616c3;
+    display: inline-flex;
+    align-items: center;
+}
+
+#Reroll-button:hover {
+    opacity: 0.85;
+}
+
+.buy_button {
+    position:absolute;
+    bottom: 15px;
+    align-self: center;
+    width: 100px;
+    left: 40px;
+    border-radius: 5px;
+    background-color: #1a1616c3;
+    color: aliceblue;
+    font-weight: bold;
+}
+
+.buy_button:hover{
     opacity: 0.85;
 }
