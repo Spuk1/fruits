@@ -10,7 +10,14 @@
         <canvas></canvas>
         <div id="menu" style="display: none;">
             <h1 style="position: absolute; top: 1%; left: 2%; color: aliceblue;">Shop</h1>
-            <h1 style="position: absolute; top: 1%; left: 45%; color: aliceblue;" id="money">234</h1>
+            <h1 style="position: absolute; top: 1%; right: 50%; color: aliceblue;" id="money">234</h1>
+            <img style="position: absolute; top: 5%; left: 50%;width: 32px;" src="assets/credits.jpg">
+            <div style="position: absolute; top: 4.5%; right:27%; color: aliceblue;; border-radius: 5px;
+                        width: 160px; height: 45px; background-color: #1a1616c3;display: inline-flex; align-items: center;
+            "><button style="border: 0; background: none; color: aliceblue; font-size: 24px;">Reroll -</button>
+            <p style="font-size: 24px;" id="RerollCredits">15</p>
+            <img style="width: 28px; margin-left: 8px;" src="assets/credits.jpg">
+        </div>
             <div id="items-box">
                 <div class="items">
                     <div style="display: grid;">
@@ -21,6 +28,8 @@
                     <p class="stats" id="item1_stat2">aaaa: -1</p>
                     <p class="stats" id="item1_stat3" >sadf</p>
                     <p class="stats" id="item1_stat4">werrwd</p>
+                    <p class="stats" id="item1_stat5">werrwd</p>
+                    <button class="buy_button" id="item1_button">buy</button>
                 </div>
                 <div class="items" >
                     <div style="display: grid;">
@@ -31,16 +40,20 @@
                     <p class="stats" id="item2_stat2">aaaa: -1</p>
                     <p class="stats" id="item2_stat3">sadf</p>
                     <p class="stats" id="item2_stat4">werrwd</p>
+                    <p class="stats" id="item2_stat5">werrwd</p>
+                    <button class="buy_button" id="item2_button">buy</button>
                 </div>
                 <div class="items">
                     <div style="display: grid;">
                     <p style="grid-column: 2; grid-row: 1; text-align: left; margin-left: 0;" id="item3_name">Sword</p>
                     <img class="item-images"  src="assets/sword.png" id="item3_image">
                     </div>
-                    <p style="grid-column: 1; grid-row: 2;" class="stats" id="item3-stat1">blabla: +3</p>
-                    <p style="grid-column: 1; grid-row: 3;" class="stats" id="item3-stat2">aaaa: -1</p>
-                    <p style="grid-column: 1; grid-row: 4;" class="stats" id="item3-stat3">sadf</p>
-                    <p  class="stats" id="item3-stat4">werrwd</p>
+                    <p class="stats" id="item3_stat1">blabla: +3</p>
+                    <p class="stats" id="item3_stat2">aaaa: -1</p>
+                    <p class="stats" id="item3_stat3">sadf</p>
+                    <p class="stats" id="item3_stat4">werrwd</p>
+                    <p class="stats" id="item3_stat5">werrwd</p>
+                    <button class="buy_button" id="item3_button">buy</button>
                     </div>
                 <div class="items">
                     <div style="display: grid;">
@@ -52,6 +65,8 @@
                         <p  class="stats" id="item4_stat2">aaaa: -1</p>
                         <p  class="stats" id="item4_stat3">sadf</p>
                         <p  class="stats" id="item4_stat4">werrwd</p>
+                        <p class="stats" id="item4_stat5">werrwd</p>
+                        <button class="buy_button" id="item4_button">buy</button>
                     </div>
                     
                 </div>
@@ -91,6 +106,8 @@
 <script src="waves.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js" integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="classes.js"></script>
+<script src="items.js"></script>
+<script src="menu.js"></script>
 <script src="main.js"></script>
 </footer>
 </html>

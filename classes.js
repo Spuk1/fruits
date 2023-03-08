@@ -6,7 +6,7 @@ class Sprite {
         frames= {max: 1, hold: 10},
         animate = false,
         sprites,
-        hp = 100
+        hp = 20
     }){
         this.id = id
         this.position = position
@@ -66,13 +66,18 @@ class Sprite {
 
 class WeaponMelee {
     constructor({
-        position,
+        position = player.position,
         slot,
         damage,
         attackSpeed = 3000,
         image,
         isAttacking = false,
         onCooldown = false,
+        meleeDmg,
+        rangedDmg,
+        Speed,
+        hp,
+        lifesteal
     }){
     this.position = position
     this.slot = slot
@@ -82,9 +87,14 @@ class WeaponMelee {
     this.isAttacking = isAttacking
     this.onCooldown = onCooldown
     this.image.src = image.src
+    this.meleeDmg = meleeDmg
+    this.rangedDmg = rangedDmg
+    this. Speed = Speed
+    this.hp = hp
+    this.lifesteal = lifesteal
     }
     draw(){
-        c.drawImage(this.image, this.position.x - Math.cos(this.slot*(360/6)), this.position.y - Math.sin(this.slot*(360/6)));
+        c.drawImage(this.image, this.position.x, this.position.y);
     }
     getEnemyDist = (obj, i) => {
         let enemyDistance = Math.sqrt(Math.pow((player.position.x - obj.position.x),2) + Math.pow((player.position.y - obj.position.x),2));
@@ -101,11 +111,11 @@ class WeaponMelee {
                 y: obj.position.y + 50,
                 onComplete: () => {
                      // Enemy gets hit
-                    obj.hp -= 100
+                    obj.hp -= this.damage + this.meleeDmg
                     checkHealth(obj, i)
                     gsap.to(this.position, {
-                        x: player.position.x -20,
-                        y: player.position.y -20,
+                        x: player.position.x + 50* Math.cos(this.slot*(360/6)),
+                        y: player.position.y + 50 *Math.sin(this.slot*(360/6)),
                         onComplete: async() => {
                             this.isAttacking = false;
                             await new Promise(r => setTimeout(r, this.attackSpeed));
@@ -117,3 +127,41 @@ class WeaponMelee {
         }
         
     }
+
+
+    class WeaponShop {
+        constructor({
+            name,
+            damage,
+            attackSpeed = 3000,
+            image,
+            meleeDmg,
+            rangedDmg,
+            Speed,
+            hp,
+            lifesteal
+        }){
+        this.name = name
+        this.damage = damage
+        this.attackSpeed = attackSpeed
+        this.image = image
+        this.meleeDmg = meleeDmg
+        this.rangedDmg = rangedDmg
+        this.Speed = Speed
+        this.hp = hp
+        this.lifesteal = lifesteal
+        }
+        buyWeapon = () => {
+            ownedWeapons.push(new WeaponMelee ({
+                slot: ownedWeapons.length,
+                image: this.image,
+                damage: this.damage,
+                attackSpeed: this.attackSpeed,
+                meleeDmg: this.meleeDmg,
+                rangedDmg: this.rangedDmg,
+                Speed: this.Speed,
+                hp: this.hp,
+                lifesteal: this.lifesteal
+            }))
+        }
+}

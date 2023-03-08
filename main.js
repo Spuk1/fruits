@@ -64,29 +64,6 @@ const enemies = []
 
 
 
-// Weapon
-
-const weapons = [];
-swordImagesrc = "./assets/sword.png";
-
-const getSword = () => {
-    weapons.push(
-        new WeaponMelee({
-            slot: weapons.length,
-            image: {src: swordImagesrc},
-            position: {
-                x: player.position.x,
-                y: player.position.y
-            },
-            damage: 20
-        })
-    )
-}
-
-
-
-
-
 //Add Event listener Movement
 
 const keys = {
@@ -148,7 +125,7 @@ const checkHealth = (obj, i) => {
 }
 
 
-
+sword.buyWeapon()
 const animate = () => {
     window.requestAnimationFrame(animate);
     background.draw();
@@ -187,18 +164,18 @@ const animate = () => {
     for(let i=0;i<enemies.length;i++){
         enemies[i].draw();
         enemies[i].enmeyAI();
-        for(let j=0;j<weapons.length;j++){
-            weapons[j].getEnemyDist(enemies[i], i);
+        for(let j=0;j<ownedWeapons.length;j++){
+            ownedWeapons[j].getEnemyDist(enemies[i], i);
         }
         }
 
     //draw Weapons
-    for(i=0;i<weapons.length;i++){
-        weapons[i].draw()
-        if(weapons[i].isAttacking === false) {
-            weapons[i].position = {
-                x: player.position.x + 60 * Math.cos(weapons[i].slot*(360/6)),
-                y: player.position.y+ 60 * Math.sin(weapons[i].slot*(360/6))
+    for(i=0;i<ownedWeapons.length;i++){
+        ownedWeapons[i].draw()
+        if(ownedWeapons[i].isAttacking === false) {
+            ownedWeapons[i].position = {
+                x: player.position.x + 60 * Math.cos(ownedWeapons[i].slot*(360/6)),
+                y: player.position.y+ 60 * Math.sin(ownedWeapons[i].slot*(360/6))
             }
         }
     }
@@ -207,4 +184,3 @@ const animate = () => {
 }
 wave1(1)
 animate();
-getSword();

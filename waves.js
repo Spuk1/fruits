@@ -46,6 +46,7 @@ const wave1 = async(diff) => {
         time++;
     }
     enemies.splice(0,enemies.length)
+    getShopItems();
     document.getElementById("menu").style.display = "inline-block"
     
 }
