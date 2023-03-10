@@ -173,14 +173,13 @@ class WeaponMelee {
     }
     getEnemyDist = (obj, i) => {
         let enemyDistance = Math.sqrt(Math.pow((player.position.x - obj.position.x),2) + Math.pow((player.position.y - obj.position.x),2));
-        if(enemyDistance < 300 && !this.onCooldown) {
+        if(enemyDistance < 200 && !this.onCooldown) {
             this.attack(obj, i)
         }
     }
     attack = (obj, i) => {
             this.onCooldown = true;
             this.isAttacking = true;
-            
             gsap.to(this.position, {
                 x: obj.position.x + 50,
                 y: obj.position.y + 50,

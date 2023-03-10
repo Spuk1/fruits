@@ -3,7 +3,7 @@ const c = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 600;
 
-const roundTime = 2
+const roundTime = 20
 var currentWave = 1
 const waves = [wave1, wave2, wave3, wave4, wave5]
 var rerollcount = 0
@@ -122,8 +122,20 @@ addEventListener("keyup", (event) => {
             break;
     }
 })
+var justStarted = true
 
-
+const attack = async() => {
+    if(justStarted){
+    justStarted = false
+    await new Promise(r => setTimeout(r, 1000))
+    
+}
+    ownedWeapons.forEach((weapon,i) => {
+        enemies.forEach(enemy => {
+            weapon.getEnemyDist(enemy,i)
+    })
+});
+}
 
 const checkHealth = (obj, i) => {
     if (obj.hp <= 0){
@@ -203,19 +215,9 @@ const animate = () => {
         enemies[i].draw();
         enemies[i].enemyAI();
     }
-        /*
-        for(let j=0;j<ownedWeapons.length;j++){
-            ownedWeapons[j].getEnemyDist(enemies[i], i);
-        }
-        }
-
-    ownedWeapons.forEach(weapon => {
-        enemies.forEach(enemy => {
-            weapon.getEnemyDist(enemy)
-        })
-    });*/
-    //console.log(getCollision(enemies[1], enemies[0]))
-    //draw Weapons
+    
+ 
+   
     for(i=0;i<ownedWeapons.length;i++){
         ownedWeapons[i].draw()
         if(ownedWeapons[i].isAttacking === false) {
@@ -225,6 +227,8 @@ const animate = () => {
             }
         }
     }
+
+    attack()
 }
 wave1(1)
 animate()
