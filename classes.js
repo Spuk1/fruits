@@ -117,17 +117,29 @@ class Sprite {
             
                     
 }
+    recieveDmg = async() => {
+        await new Promise(r => setTimeout(r, 200))
+        document.getElementById("health").innerHTML = this.hp
+        enemies.forEach((enemy, i) => {
+            if(getCollision(this, enemy)) {
+                console.log("aaa")
+                this.hp -= 4
+                
+        }
+    })
+    await new Promise(r => setTimeout(r, 500))
+}
 }
 
 const getCollisionX = (obj1, obj2) => {
-    return (obj1.position.x + obj1.width/2 >= obj2.position.x &&
-        obj1.position.x <= obj2.position.x + obj2.width/2)
+    return (obj1.position.x + obj1.width >= obj2.position.x &&
+        obj1.position.x <= obj2.position.x + obj2.width)
 }
 
 
 const getCollisionY = (obj1, obj2) => {
-    return (obj1.position.y <= obj2.position.y + obj2.height/2 &&
-        obj1.position.y + obj1.height/2 >= obj2.position.y)
+    return (obj1.position.y <= obj2.position.y + obj2.height &&
+        obj1.position.y + obj1.height >= obj2.position.y)
 }
 
 
@@ -199,6 +211,7 @@ class WeaponMelee {
                 }
             })
         }
+        
         
     }
 

@@ -27,7 +27,32 @@ const spawnEnemyEmby = (amount) => {
     }
 }
 
-
+const spawnEnemyFruitFly = (amount) => {
+    for(i = 0; i<amount;i++) {
+        enemies.push(
+            new Sprite({
+                id: i,
+                position:{
+                    x: Math.floor(Math.random()* canvas.width),
+                    y: Math.floor(Math.random()* canvas.height)
+                },
+                sprites: {
+                    up:embyImageSprite,
+                    down:embyImageFront,
+                    left:embyImageFront,
+                    right:embyImageSprite
+                },
+                image: {
+                    src: "./images/enemies/EmbyFront.png"
+                },
+                frames: {
+                    max:4,
+                    hold:8
+                }
+            })
+        )
+    }
+}
 
 const wave1 = async(diff) => {
     player.money = 1000

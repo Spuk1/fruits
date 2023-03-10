@@ -227,7 +227,7 @@ const animate = () => {
             }
         }
     }
-
+    player.recieveDmg()
     attack()
 }
 wave1(1)
