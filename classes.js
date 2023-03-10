@@ -6,7 +6,12 @@ class Sprite {
         frames= {max: 1, hold: 10},
         animate = false,
         sprites,
-        hp = 20
+        hp = 20,
+        money = 0,
+        meleeDmg = 0,
+        rangedDmg = 0,
+        Speed = 0,
+        lifesteal = 0
     }){
         this.id = id
         this.position = position
@@ -15,6 +20,11 @@ class Sprite {
         this.animate = animate
         this.sprites = sprites
         this.hp = hp
+        this.money = money,
+        this.meleeDmg = meleeDmg
+        this.rangedDmg = rangedDmg
+        this. Speed = Speed
+        this.lifesteal = lifesteal
         this.image = new Image()
         this.image.src = image.src
         this.image.onload = () => {
@@ -47,23 +57,88 @@ class Sprite {
             else this.frames.val = 0
     }
 }
-    enmeyAI(){
-        let distX = player.position.x - this.position.x;
-        let distY = player.position.y - this.position.y;
-        if(distX < -40) {
-            this.position.x -= 1.5;
-        }else if(distX > 40){
-            this.position.x += 1.5;
-        }
-        if(distY < -40) {
-            this.position.y -= 1.5;
-        }else if(distY > 40){
-            this.position.y += 1.5;
-        }
-
-    }
+    enemyAI = async() =>{   
+        await new Promise(r => setTimeout(r, 100))
+                var movable = true
+                if(this.position.x + this.width -10 <= player.position.x){
+                    for(let i=0;i<enemies.length;i++){
+                        let e = enemies[i]
+                        if(e === this) continue
+                        movable = true
+                        if(getCollisionX(this,e)){
+                            movable = false
+                            this.position.x, e.position.x += 1.75
+                            break
+                            //console.log("should be false"
+                        }
+                    }
+                      if(movable)  this.position.x += 2.5
+                } 
+                else if(this.position.x >= player.position.x +player.width-10){
+                    for(let i=0;i<enemies.length;i++){
+                        let e = enemies[i]
+                        if(e === this) continue
+                        movable = true
+                        if(getCollisionX(this, e)){
+                            movable = false
+                            this.position.x, e.position.x -= 1.75
+                            //console.log("should be false")
+                            break
+                        }
+                } 
+                if(movable) this.position.x -=2.5
+            }
+                if(this.position.y >= player.position.y + player.height) {
+                    for(let i=0;i<enemies.length;i++){
+                        const e = enemies[i]
+                        if(e === this) continue
+                        movable=true
+                        if(getCollisionY(this, e)){
+                            movable = false
+                            this.position.y, e.position.y -= 1.75
+                            //console.log("should be false")
+                            break
+                        }}
+                    if(movable) this.position.y -=1.5
+                }
+                else if(this.position.y + this.height/2 <= player.position.y) {
+                    for(let i=0;i<enemies.length;i++){
+                        const e = enemies[i]
+                        if(e === this) continue
+                        movable = true
+                        if(getCollisionY(this,e)){
+                            movable = false
+                            this.position.y, e.position.y += 1.75
+                            //console.log("should be false")
+                            break
+                        }}
+                    if(movable) this.position.y +=2.5
+                }
+            
+                    
+}
 }
 
+const getCollisionX = (obj1, obj2) => {
+    return (obj1.position.x + obj1.width/2 >= obj2.position.x &&
+        obj1.position.x <= obj2.position.x + obj2.width/2)
+}
+
+
+const getCollisionY = (obj1, obj2) => {
+    return (obj1.position.y <= obj2.position.y + obj2.height/2 &&
+        obj1.position.y + obj1.height/2 >= obj2.position.y)
+}
+
+
+const getCollision =({rectangle1, rectangle2}) => {
+    return (
+            rectangle1.position.x + rectangle1.width >= rectangle2.position.x &&
+            rectangle1.position.x <= rectangle2.position.x + rectangle2.width &&
+            rectangle1.position.y <= rectangle2.position.y + rectangle2.height &&
+            rectangle1.position.y + rectangle1.height >= rectangle2.position.y
+            )
+}
 class WeaponMelee {
     constructor({
         position = player.position,
@@ -178,7 +253,9 @@ class WeaponMelee {
         this.price = price
         }
         buyItem = () => {
+            player.money -= this.price
             if(this.type === "weapon") {
+            if(ownedWeapons.length < 6){
             ownedWeapons.push(new WeaponMelee ({
                 slot: ownedWeapons.length,
                 image: this.image,
@@ -189,23 +266,38 @@ class WeaponMelee {
                 Speed: this.Speed,
                 hp: this.hp,
                 lifesteal: this.lifesteal
-            
             }))
+            let img = document.createElement("img");
+            img.src = this.image.src;
+            img.className="inv-images"
+            document.getElementById("weapons").appendChild(img)
+        }
         } else {
-            items.push(new Item ({
+            inventory.push(new Item ({
                 image: this.image,
                 meleeDmg: this.meleeDmg,
                 rangedDmg: this.rangedDmg,
                 Speed: this.Speed,
                 hp: this.hp,
                 lifesteal: this.lifesteal
-            
             }))
+            let img = document.createElement("img");
+            img.src = this.image.src;
+            img.className="inv-images"
+            document.getElementById("inventory").appendChild(img)
 
         }
+        applyStats(this)
+        displayPlayerStats()
         }
 }
 
 
 
 
+const applyStats = (obj) => {
+    for(let key in obj) {
+        if(key != "image" && key != "buyItem" && (obj[key] < 0 || obj[key] > 0) && key != "damage" && key != "attackSpeed" && key != "price")
+        player[key] += obj[key]
+    }
+}

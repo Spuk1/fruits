@@ -6,8 +6,8 @@ const spawnEnemyEmby = (amount) => {
             new Sprite({
                 id: i,
                 position:{
-                    x:+100 + (i*50),
-                    y:+70 + (i*30)
+                    x: Math.floor(Math.random()* canvas.width),
+                    y: Math.floor(Math.random()* canvas.height)
                 },
                 sprites: {
                     up:embyImageSprite,
@@ -30,6 +30,9 @@ const spawnEnemyEmby = (amount) => {
 
 
 const wave1 = async(diff) => {
+    player.money = 1000
+    document.getElementById("parent").appendChild(moneyEle)
+    moneyEle.style.right = "90%"
     time = 0;
     spawnEnemyEmby(2*diff)
     document.getElementById("wave").innerHTML = "Wave 1"
@@ -42,20 +45,15 @@ const wave1 = async(diff) => {
         time++;
     }
     enemies.splice(0,enemies.length)
-    getShopItems();
+    randomizeShop(currentWave);
     document.getElementById("menu").style.display = "inline-block"
     currentWave += 1
 }
 
 const wave2 = async(diff) => {
+    document.getElementById("parent").appendChild(moneyEle)
+    moneyEle.style.right = "90%"
     document.getElementById("menu").style.display = "none"
-    for(let i=1;i<=4;i++) {
-        node = document.getElementById(`item${i}`)
-        while(node.firstChild){
-            node.removeChild(node.firstChild)
-    }
-    }
-    
     time = 0;
     spawnEnemyEmby(2*diff)
     document.getElementById("wave").innerHTML = "Wave" + currentWave
@@ -68,7 +66,67 @@ const wave2 = async(diff) => {
         time++;
     }
     enemies.splice(0,enemies.length)
-    getShopItems();
+    randomizeShop(currentWave);
+    document.getElementById("menu").style.display = "inline-block"
+    currentWave += 1
+}
+const wave3 = async(diff) => {
+    document.getElementById("parent").appendChild(moneyEle)
+    moneyEle.style.right = "90%"
+    document.getElementById("menu").style.display = "none"
+    time = 0;
+    spawnEnemyEmby(2*diff)
+    document.getElementById("wave").innerHTML = "Wave" + currentWave
+    while(time <= roundTime) {
+        if (time %5 === 0) {
+            spawnEnemyEmby(2*diff)
+        }
+        document.getElementById("timer").innerHTML = roundTime -time;
+        await new Promise(r => setTimeout(r, 1000))
+        time++;
+    }
+    enemies.splice(0,enemies.length)
+    randomizeShop(currentWave);
+    document.getElementById("menu").style.display = "inline-block"
+    currentWave += 1
+}
+const wave4 = async(diff) => {
+    document.getElementById("parent").appendChild(moneyEle)
+    moneyEle.style.right = "90%"
+    document.getElementById("menu").style.display = "none"
+    time = 0;
+    spawnEnemyEmby(2*diff)
+    document.getElementById("wave").innerHTML = "Wave" + currentWave
+    while(time <= roundTime) {
+        if (time %5 === 0) {
+            spawnEnemyEmby(2*diff)
+        }
+        document.getElementById("timer").innerHTML = roundTime -time;
+        await new Promise(r => setTimeout(r, 1000))
+        time++;
+    }
+    enemies.splice(0,enemies.length)
+    randomizeShop(currentWave);
+    document.getElementById("menu").style.display = "inline-block"
+    currentWave += 1
+}
+const wave5 = async(diff) => {
+    document.getElementById("parent").appendChild(moneyEle)
+    moneyEle.style.right = "90%"
+    document.getElementById("menu").style.display = "none"
+    time = 0;
+    spawnEnemyEmby(2*diff)
+    document.getElementById("wave").innerHTML = "Wave" + currentWave
+    while(time <= roundTime) {
+        if (time %5 === 0) {
+            spawnEnemyEmby(2*diff)
+        }
+        document.getElementById("timer").innerHTML = roundTime -time;
+        await new Promise(r => setTimeout(r, 1000))
+        time++;
+    }
+    enemies.splice(0,enemies.length)
+    randomizeShop(currentWave);
     document.getElementById("menu").style.display = "inline-block"
     currentWave += 1
 }

@@ -3,9 +3,11 @@ const c = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 600;
 
-const roundTime = 1
+const roundTime = 2
 var currentWave = 1
-const waves = [wave1, wave2]
+const waves = [wave1, wave2, wave3, wave4, wave5]
+var rerollcount = 0
+var rerollPrice = 7
 
 
 c.fillRect(0,0, canvas.width, canvas.height);
@@ -60,7 +62,9 @@ const player = new Sprite({
         down: playerImageDown,
         right: playerImageRight,
         left: playerImageLeft
-    }
+    },
+    money: 0,
+    Speed: 24
 })
 
 //spawn Enemies
@@ -124,55 +128,93 @@ addEventListener("keyup", (event) => {
 const checkHealth = (obj, i) => {
     if (obj.hp <= 0){
         enemies.splice(i,1)
-        console.log(enemies)
+        player.money += 3
     }
 }
-
+const moneyEle = document.createElement("h1")
+moneyEle.id = "money"
 
 sword.buyItem()
 const animate = () => {
     window.requestAnimationFrame(animate);
     background.draw();
     player.draw();
+    moneyEle.innerHTML = player.money
 
 
-
-    if (keys.w.pressed) {
-        player.position.y -= 3;
+    if (keys.w.pressed && !keys.a.pressed && !keys.d.pressed) {
+        player.position.y -= player.Speed/8;
         player.image = player.sprites.up;
         player.animate = true;
         
     }
+    
 
-    else if (keys.s.pressed) {
-        player.position.y += 3;
+    else if (keys.s.pressed && !keys.a.pressed && !keys.d.pressed) {
+        player.position.y += player.Speed/8;
         player.image = player.sprites.down;
         player.animate = true;
     }
 
-    else if (keys.a.pressed) {
-        player.position.x -= 3;
+    else if (keys.a.pressed && !keys.w.pressed && !keys.s.pressed) {
+        player.position.x -= player.Speed /8;
         player.image = player.sprites.left;
         player.animate = true;
     }
 
-    else if (keys.d.pressed) {
-        player.position.x += 3;
+    else if (keys.d.pressed && !keys.w.pressed && !keys.s.pressed) {
+        player.position.x += player.Speed /8;
         player.image = player.sprites.right;
         player.animate = true;
+    }
+    else if (keys.d.pressed && keys.w.pressed) {
+            player.position.y -= player.Speed /12;
+            player.position.x += player.Speed /12;
+            player.image = player.sprites.right;
+            player.animate = true;
 
-    }else  {player.animate = false;}
+    }
+    else if (keys.a.pressed && keys.w.pressed) {
+        player.position.y -= player.Speed /12;
+        player.position.x -= player.Speed /12;
+        player.image = player.sprites.left;
+        player.animate = true;
+
+    }
+    else if (keys.d.pressed && keys.s.pressed) {
+    player.position.y += player.Speed /12;
+    player.position.x += player.Speed /12;
+    player.image = player.sprites.right;
+    player.animate = true;
+
+    }   
+    else if (keys.a.pressed && keys.s.pressed) {
+        player.position.y += player.Speed /12;
+        player.position.x -= player.Speed /12;
+        player.image = player.sprites.left;
+        player.animate = true;
+
+    }
+    else  {player.animate = false;}
 
 
     //draw Enemies
     for(let i=0;i<enemies.length;i++){
         enemies[i].draw();
-        enemies[i].enmeyAI();
+        enemies[i].enemyAI();
+    }
+        /*
         for(let j=0;j<ownedWeapons.length;j++){
             ownedWeapons[j].getEnemyDist(enemies[i], i);
         }
         }
 
+    ownedWeapons.forEach(weapon => {
+        enemies.forEach(enemy => {
+            weapon.getEnemyDist(enemy)
+        })
+    });*/
+    //console.log(getCollision(enemies[1], enemies[0]))
     //draw Weapons
     for(i=0;i<ownedWeapons.length;i++){
         ownedWeapons[i].draw()
@@ -183,8 +225,6 @@ const animate = () => {
             }
         }
     }
-
-    
 }
 wave1(1)
-animate();
+animate()

@@ -106,6 +106,7 @@ position: relative;
     border-radius: 5px;
     margin: 2px;
     padding: 2px;
+    width: 48px;
 }
 
 #weapons {
@@ -174,3 +175,10 @@ position: relative;
 .buy_button:hover{
     opacity: 0.85;
 }
+
+#money {
+    position: absolute;
+    top: 1%;
+    right: 50%;
+    color: aliceblue;
+    }

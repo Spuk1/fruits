@@ -20,7 +20,7 @@ const dagger = new WeaponShop({
     attackSpeed: 2000,
     Speed: +3,
     rangedDmg: -3,
-    lifeSteal: +1,
+    lifesteal: +1,
     type: "weapon",
     price: 25
 })
@@ -36,9 +36,46 @@ const Bulldozer = new WeaponShop({
     price: 37
 })
 
+const SchwiftyBoots = new WeaponShop({
+    name: "Schwifty Boots",
+    image:{src:"assets/boots.png"},
+    Speed: +6,
+    hp:-3,
+    meleeDmg:-1,
+    type: "item",
+    price: 55
+})
+
 
 const weapons = [sword,dagger]
-const items = []
+const items = [Bulldozer,SchwiftyBoots]
+const inventory = []
 const chosen = [sword,dagger,Bulldozer]
 
 const ownedWeapons = [];
+
+const randomizeShop = (wave) => {
+    if(!rerollcount) rerollPrice = 7
+    document.getElementById("RerollCredits").innerHTML = rerollPrice
+    chosen.splice(0,chosen.length)
+    for(let i = 0; i<4;i++) {
+        if(wave < 3 && chosen.length <2 || chosen.length === 0) {
+            chosen.push(weapons[Math.floor(Math.random()* weapons.length)  ])
+        } else {
+            chosen.push(items[Math.floor(Math.random()* items.length) ])
+        }
+        
+        
+    }
+    getShopItems()
+}
+
+let rerollButton = document.getElementById("Reroll-button")
+
+rerollButton.addEventListener("click", (e) => {
+    if(player.money >= rerollPrice) {
+    player.money -= rerollPrice
+    rerollPrice = (rerollcount+2)*7
+    rerollcount++
+    randomizeShop(currentWave)}
+})
