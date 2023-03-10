@@ -83,7 +83,7 @@ document.querySelectorAll(".items").forEach((button) => {
     button.addEventListener("click", (e)=> {
         switch(e.currentTarget.id) {
             case "item1":
-                if(!(chosen[0]) || (chosen[1].type === "weapon" && ownedWeapons.length === 6)) break;
+                if(!(chosen[0]) || (chosen[0].type === "weapon" && ownedWeapons.length === 6)) break;
                 if(player.money >= chosen[0].price) {
                 chosen[0].buyItem();
                 delete chosen[0]
