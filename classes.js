@@ -1,3 +1,4 @@
+let dmgCD = false
 class Sprite {
     constructor({
         id,
@@ -27,6 +28,7 @@ class Sprite {
         this.lifesteal = lifesteal
         this.image = new Image()
         this.image.src = image.src
+        this.opacity = 1
         this.image.onload = () => {
             this.width = this.image.width /this.frames.max
             this.height = this.image.height
@@ -35,6 +37,7 @@ class Sprite {
     }
     draw() {
         c.save()
+        c.globalAlpha = this.opacity
         c.drawImage(
             this.image,
             this.frames.val * this.width,
@@ -120,16 +123,30 @@ class Sprite {
                     
 }
     recieveDmg = async() => {
-        await new Promise(r => setTimeout(r, 200))
+        dmgCD = true
         document.getElementById("health").innerHTML = this.hp
-        enemies.forEach((enemy, i) => {
+        await new Promise(r => setTimeout(r, 200))
+        if(!dmgCD) {
+            for(let i=0; i<enemies.length;i++) {
+            let enemy = enemies[i]
             if(getCollision(this, enemy)) {
-                console.log("aaa")
                 this.hp -= 4
-                
+                gsap.to(this, {
+                    opacity: 0,
+                    repeat: 5,
+                    yoyo: true,
+                    duration: 0.08,
+                onComplete(){
+                    this.opacity=1
+                }  }
+                );
+                break
         }
-    })
-    await new Promise(r => setTimeout(r, 500))
+    }
+}
+    death()   
+    await new Promise(r => setTimeout(r, 1000))
+    dmgCD = false
 }
 }
 
@@ -140,15 +157,15 @@ const getCollisionX = (obj1, obj2) => {
 
 
 const getCollisionY = (obj1, obj2) => {
-    return (obj1.position.y <= obj2.position.y + obj2.height &&
-        obj1.position.y + obj1.height >= obj2.position.y)
+    return (obj1.position.y <= obj2.position.y + obj2.height/2 &&
+        obj1.position.y + obj1.height/2 >= obj2.position.y)
 }
 
 
-const getCollision =({rectangle1, rectangle2}) => {
+const getCollision =(rectangle1, rectangle2) => {
     return (
-            rectangle1.position.x + rectangle1.width >= rectangle2.position.x &&
-            rectangle1.position.x <= rectangle2.position.x + rectangle2.width &&
+            rectangle1.position.x + rectangle1.width/1.2 >= rectangle2.position.x &&
+            rectangle1.position.x <= rectangle2.position.x + rectangle2.width/1.2 &&
             rectangle1.position.y <= rectangle2.position.y + rectangle2.height &&
             rectangle1.position.y + rectangle1.height >= rectangle2.position.y
             )

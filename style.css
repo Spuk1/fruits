@@ -182,3 +182,25 @@ position: relative;
     right: 50%;
     color: aliceblue;
     }
+
+#deathHeader {
+    position: absolute;
+    top: 43%;
+    text-align: center;
+    color: red;
+    text-decoration: underline;
+    font-size: 48px;
+    font-weight: bold;
+    left: 40%;
+}
+
+#PlayAgainButton {
+    position: absolute;
+    top: 48%;
+    left: 40;
+    background-color: #1a1616c3;
+    color: aliceblue;
+    font-weight: bold;
+    width: 100px;
+    border-radius: 5px;
+}

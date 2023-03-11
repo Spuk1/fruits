@@ -59,7 +59,7 @@ const getShopItems = async() => {
         document.getElementById(`item${i+1}_grid`).appendChild(nameText);
         document.getElementById(`item${i+1}_grid`).appendChild(img);
         for(let key in chosen[i]) {
-            if(chosen[i][key] != null && key != "image" && key != "name" && key != "position" && key != "type" && key != "buyItem" && key != "price") {
+            if(chosen[i][key] != null && key != "image" && key != "name" && key != "position" && key != "type" && key != "buyItem" && key != "price" && key != "recieveDmg" && key != "opacity") {
                 let textElement = document.createElement("p")
                 textElement.id = "added"
                 textElement.innerHTML = `${key}: ` + chosen[i][key];

@@ -64,7 +64,8 @@ const player = new Sprite({
         left: playerImageLeft
     },
     money: 0,
-    Speed: 24
+    Speed: 24,
+    opacity: 1
 })
 
 //spawn Enemies
@@ -137,6 +138,21 @@ const attack = async() => {
 });
 }
 
+
+const death = () => {
+    if(player.hp <= 0) {
+        moving = false
+        const deathHeader = document.createElement("h1")
+        deathHeader.id = "deathHeader"
+        deathHeader.innerHTML = "You Died!"
+        document.getElementById("parent").appendChild(deathHeader)
+        const playAgainButton = document.createElement("button")
+        playAgainButton.innerHTML = "PlayAgain"
+        playAgainButton.id = "PlayAgainButton"
+        document.getElementById("parent").appendChild(playAgainButton)
+    }
+}
+
 const checkHealth = (obj, i) => {
     if (obj.hp <= 0){
         enemies.splice(i,1)
@@ -147,67 +163,72 @@ const moneyEle = document.createElement("h1")
 moneyEle.id = "money"
 
 sword.buyItem()
+
+let moving = true
+
 const animate = () => {
     window.requestAnimationFrame(animate);
     background.draw();
     player.draw();
     moneyEle.innerHTML = player.money
 
-
-    if (keys.w.pressed && !keys.a.pressed && !keys.d.pressed) {
-        player.position.y -= player.Speed/8;
-        player.image = player.sprites.up;
-        player.animate = true;
+    if(moving) {
+        if (keys.w.pressed && !keys.a.pressed && !keys.d.pressed) {
+            player.position.y -= player.Speed/8;
+            player.image = player.sprites.up;
+            player.animate = true;
+            
+        }
         
-    }
     
-
-    else if (keys.s.pressed && !keys.a.pressed && !keys.d.pressed) {
-        player.position.y += player.Speed/8;
-        player.image = player.sprites.down;
-        player.animate = true;
-    }
-
-    else if (keys.a.pressed && !keys.w.pressed && !keys.s.pressed) {
-        player.position.x -= player.Speed /8;
-        player.image = player.sprites.left;
-        player.animate = true;
-    }
-
-    else if (keys.d.pressed && !keys.w.pressed && !keys.s.pressed) {
-        player.position.x += player.Speed /8;
-        player.image = player.sprites.right;
-        player.animate = true;
-    }
-    else if (keys.d.pressed && keys.w.pressed) {
-            player.position.y -= player.Speed /12;
-            player.position.x += player.Speed /12;
+        else if (keys.s.pressed && !keys.a.pressed && !keys.d.pressed) {
+            player.position.y += player.Speed/8;
+            player.image = player.sprites.down;
+            player.animate = true;
+        }
+    
+        else if (keys.a.pressed && !keys.w.pressed && !keys.s.pressed) {
+            player.position.x -= player.Speed /8;
+            player.image = player.sprites.left;
+            player.animate = true;
+        }
+    
+        else if (keys.d.pressed && !keys.w.pressed && !keys.s.pressed) {
+            player.position.x += player.Speed /8;
             player.image = player.sprites.right;
             player.animate = true;
-
-    }
-    else if (keys.a.pressed && keys.w.pressed) {
-        player.position.y -= player.Speed /12;
-        player.position.x -= player.Speed /12;
-        player.image = player.sprites.left;
-        player.animate = true;
-
-    }
-    else if (keys.d.pressed && keys.s.pressed) {
-    player.position.y += player.Speed /12;
-    player.position.x += player.Speed /12;
-    player.image = player.sprites.right;
-    player.animate = true;
-
-    }   
-    else if (keys.a.pressed && keys.s.pressed) {
+        }
+        else if (keys.d.pressed && keys.w.pressed) {
+                player.position.y -= player.Speed /12;
+                player.position.x += player.Speed /12;
+                player.image = player.sprites.right;
+                player.animate = true;
+    
+        }
+        else if (keys.a.pressed && keys.w.pressed) {
+            player.position.y -= player.Speed /12;
+            player.position.x -= player.Speed /12;
+            player.image = player.sprites.left;
+            player.animate = true;
+    
+        }
+        else if (keys.d.pressed && keys.s.pressed) {
         player.position.y += player.Speed /12;
-        player.position.x -= player.Speed /12;
-        player.image = player.sprites.left;
+        player.position.x += player.Speed /12;
+        player.image = player.sprites.right;
         player.animate = true;
-
+    
+        }   
+        else if (keys.a.pressed && keys.s.pressed) {
+            player.position.y += player.Speed /12;
+            player.position.x -= player.Speed /12;
+            player.image = player.sprites.left;
+            player.animate = true;
+    
+        }
+        else  {player.animate = false;}
     }
-    else  {player.animate = false;}
+    
 
 
     //draw Enemies
