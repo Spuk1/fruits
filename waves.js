@@ -43,10 +43,10 @@ const spawnEnemyFruitFly = (amount) => {
                     right:embyImageSprite
                 },
                 image: {
-                    src: "./images/enemies/EmbyFront.png"
+                    src: "./images/enemies/Fruchtfliege_160x160.png"
                 },
                 frames: {
-                    max:4,
+                    max:1,
                     hold:8
                 }
             })
@@ -59,11 +59,11 @@ const wave1 = async(diff) => {
     document.getElementById("parent").appendChild(moneyEle)
     moneyEle.style.right = "90%"
     time = 0;
-    spawnEnemyEmby(2*diff)
+    spawnEnemyFruitFly(2*diff)
     document.getElementById("wave").innerHTML = "Wave 1"
     while(time <= roundTime) {
         if (time %5 === 0) {
-            spawnEnemyEmby(2*diff)
+            spawnEnemyFruitFly(2*diff)
         }
         document.getElementById("timer").innerHTML = roundTime -time;
         await new Promise(r => setTimeout(r, 1000))
