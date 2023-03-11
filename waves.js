@@ -43,12 +43,13 @@ const spawnEnemyFruitFly = (amount) => {
                     right:embyImageSprite
                 },
                 image: {
-                    src: "./images/enemies/Fruchtfliege_160x160.png"
+                    src: "./images/enemies/Fruchtfliege_Left.png"
                 },
                 frames: {
-                    max:1,
-                    hold:8
-                }
+                    max:3,
+                    hold:10
+                },
+                animate: true
             })
         )
     }
