@@ -61,6 +61,7 @@ class Sprite {
         await new Promise(r => setTimeout(r, 100))
                 var movable = true
                 if(this.position.x + this.width -10 <= player.position.x){
+                    this.image.src = this.sprites.right
                     for(let i=0;i<enemies.length;i++){
                         let e = enemies[i]
                         if(e === this) continue
@@ -75,6 +76,7 @@ class Sprite {
                       if(movable)  this.position.x += 2.5
                 } 
                 else if(this.position.x >= player.position.x +player.width-10){
+                    this.image.src = this.sprites.left
                     for(let i=0;i<enemies.length;i++){
                         let e = enemies[i]
                         if(e === this) continue
