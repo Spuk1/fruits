@@ -1,0 +1,33 @@
+body {
+    display: inline-block;
+    background-image: url("./assets/background-image.webp");
+    background-size: cover;
+}
+
+h1 {
+    color: aliceblue;
+    font-size: 48px;
+    text-align: center;
+    left: 550px;
+    position: relative;
+}
+
+#PlayButton {
+    background-color: #1a1616c3;
+    width: 120px;
+    position: relative;
+    left: 550px;
+    color: aliceblue;
+    text-decoration: none;
+    border-radius: 5px;
+    padding: 2px 5px;
+    text-align: center;
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+#PlayButton:hover {
+    opacity: 0.8;
+}

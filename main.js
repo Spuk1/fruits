@@ -3,7 +3,7 @@ const c = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 600;
 
-const roundTime = 20
+var roundTime = 20
 var currentWave = 1
 const waves = [wave1, wave2, wave3, wave4, wave5]
 var rerollcount = 0
@@ -65,7 +65,8 @@ const player = new Sprite({
     },
     money: 0,
     Speed: 24,
-    opacity: 1
+    opacity: 1,
+    hp: 5
 })
 
 //Collision detection
@@ -157,22 +158,27 @@ const attack = async() => {
 });
 }
 
-
+var isDead = false
 const death = () => {
-    if(player.hp <= 0) {
+    if(player.hp <= 0 && !isDead) {
+        roundTime = 1000
         moving = false
         const deathHeader = document.createElement("h1")
         deathHeader.id = "deathHeader"
         deathHeader.innerHTML = "You Died!"
         document.getElementById("parent").appendChild(deathHeader)
-        const playAgainButton = document.createElement("button")
+        const playAgainButton = document.createElement("a")
         playAgainButton.innerHTML = "PlayAgain"
         playAgainButton.id = "PlayAgainButton"
+        playAgainButton.href = "./game.html"
         document.getElementById("parent").appendChild(playAgainButton)
-        const mainMenu = document.createElement("button")
+        const mainMenu = document.createElement("a")
         mainMenu.innerHTML = "Menu"
         mainMenu.id = "MainMenu"
+        mainMenu.href = "./index.html"
         document.getElementById("parent").appendChild(mainMenu)
+        isDead = true
+        enemies.splice(0, enemies.length)
     }
 }
 

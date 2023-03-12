@@ -62,15 +62,17 @@ const wave1 = async(diff) => {
     time = 0;
     spawnEnemyFruitFly(2*diff)
     document.getElementById("wave").innerHTML = "Wave 1"
-    while(time <= roundTime) {
-        if (time %5 === 0) {
-            spawnEnemyFruitFly(2*diff)
-        }
-        document.getElementById("timer").innerHTML = roundTime -time;
-        await new Promise(r => setTimeout(r, 1000))
-        time++;
+        while(time <= roundTime && !isDead) {
+            if (time %5 === 0) {
+                spawnEnemyFruitFly(2*diff)
+            }
+            document.getElementById("timer").innerHTML = roundTime -time;
+            await new Promise(r => setTimeout(r, 1000))
+            time++
     }
+    
     enemies.splice(0,enemies.length)
+    if(!isDead)
     randomizeShop(currentWave);
     document.getElementById("menu").style.display = "inline-block"
     currentWave += 1

@@ -201,8 +201,16 @@ position: relative;
     background-color: #1a1616c3;
     color: aliceblue;
     font-weight: bold;
-    width: 100px;
+    width: 90px;
     border-radius: 5px;
+    text-align: center;
+    padding: 1px;
+    text-decoration: none;
+    margin-right: 5px;
+}
+
+#PlayAgainButton:hover {
+    opacity: 0.8;
 }
 
 #MainMenu {
@@ -212,6 +220,13 @@ position: relative;
     background-color: #1a1616c3;
     color: aliceblue;
     font-weight: bold;
-    width: 100px;
+    width: 90px;
     border-radius: 5px;
+    text-align: center;
+    padding: 1px;
+    text-decoration: none;
+}
+
+#MainMenu:hover {
+    opacity: 0.8;
 }

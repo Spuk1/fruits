@@ -16,7 +16,7 @@ const displayPlayerStats = () => {
     statsHeader.style.color = "aliceblue"
     document.getElementById(`char_info_box`).appendChild(statsHeader);
     for(let key in player){
-        if(key != "id"&& key != "position" && key != "image" && key!= "frames" && key!= "animate" && key!= "sprites" && key != "money" && key != "height" && key != "width" && key !="enemyAI" && key != "recieveDmg" && key != "opacity" && key != "hp") {
+        if(key != "id"&& key != "position" && key != "image" && key!= "frames" && key!= "animate" && key!= "sprites" && key != "money" && key != "height" && key != "width" && key != "recieveDmg" && key != "opacity" && key != "hp" && key != "_gsap") {
             let textElement = document.createElement("p")
                 textElement.id = "stats"
                 textElement.innerHTML = `${key}: ` + player[key];
