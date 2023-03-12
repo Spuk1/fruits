@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="parent">
+        <h1 id="wave"></h1>
+        <h1  id="timer"></h1>
+        <img style="position: absolute; top: 5%; left: 11%;width: 32px;" src="assets/credits.jpg">
+        <canvas></canvas>
+        <img src="assets/heart.jpg" style="width: 60px; left: 4.5%; top:11%;position: absolute;">
+        <h1 style="top: 8%; left: 6%;color:aliceblue; position: absolute;" id="health">22</h1>
+        <div id="menu" style="display: none;">
+            <h1 style="position: absolute; top: 1%; left: 2%; color: aliceblue;">Shop</h1>
+            <img style="position: absolute; top: 5%; left: 50%;width: 32px;" src="assets/credits.jpg">
+            <div id="Reroll-button"><button style="border: 0; background: none; color: aliceblue; font-size: 24px;">Reroll -</button>
+            <p style="font-size: 24px;" id="RerollCredits">15</p>
+            <img style="width: 28px; margin-left: 8px;" src="assets/credits.jpg">
+        </div>
+            <div id="items-box">
+                <div class="items" id="item1"></div>
+                <div class="items" id="item2"></div>
+                <div class="items" id="item3"></div>
+                <div class="items" id="item4"><div >
+                    </div>
+                    
+                </div>
+            </div>
+            <div id="char_info_box">
+                <h1 style="color: aliceblue; text-align: center; font-size: 24px;">Stats</h1>
+            </div>
+            <h1 id="Inv-header">Items</h1>
+            <div id="inventory">
+    </div>
+        <h1 id="weapons-header">Weapons</h1>
+        <div id="weapons">
+        </div>
+        <button id="GO-button" onclick="nextWave()">GO</button>
+
+</body>
+
+<footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js" integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="classes.js"></script>
+<script src="items.js"></script>
+<script src="menu.js"></script>
+<script src="waves.js"></script>
+<script src="main.js"></script>
+</footer>
+</html>

@@ -20,6 +20,7 @@ class Sprite {
         this.frames = {...frames, val:0, elapsed:0}
         this.animate = animate
         this.sprites = sprites
+        this.maxHP = 20
         this.hp = hp
         this.money = money,
         this.meleeDmg = meleeDmg
@@ -29,7 +30,6 @@ class Sprite {
         this.image = new Image()
         this.image.src = image.src
         this.opacity = 1
-        this.maxHP = 20
         this.image.onload = () => {
             this.width = this.image.width /this.frames.max
             this.height = this.image.height
@@ -70,7 +70,7 @@ class Sprite {
             let enemy = enemies[i]
             if(getCollision(this, enemy)) {
                 dmgCD = true
-                this.hp -= 4
+                this.hp -= enemy.damage
                 gsap.to(this, {
                     opacity: 0,
                     repeat: 5,
@@ -93,7 +93,6 @@ class Sprite {
 
 class Enemy extends Sprite {
     constructor({
-        id,
         position,
         image,
         frames= {max: 1, hold: 10},
@@ -107,7 +106,7 @@ class Enemy extends Sprite {
         position, image, animate, frames, sprites
     })
     this.hp = hp
-    this.damage = this.damage
+    this.damage = damage
     this.Speed = Speed
   }
   enemyAI = async() =>{   

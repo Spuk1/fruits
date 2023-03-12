@@ -84,10 +84,10 @@ const getCollisionY = (obj1, obj2) => {
 
 const getCollision =(rectangle1, rectangle2) => {
     return (
-            rectangle1.position.x + rectangle1.width/1.7 >= rectangle2.position.x &&
-            rectangle1.position.x <= rectangle2.position.x + rectangle2.width/1.7 &&
-            rectangle1.position.y <= rectangle2.position.y + rectangle2.height/1.7 &&
-            rectangle1.position.y + rectangle1.height/1.7 >= rectangle2.position.y
+            rectangle1.position.x + rectangle1.width/1.6 >= rectangle2.position.x &&
+            rectangle1.position.x <= rectangle2.position.x + rectangle2.width/1.6 &&
+            rectangle1.position.y <= rectangle2.position.y + rectangle2.height/1.6 &&
+            rectangle1.position.y + rectangle1.height/1.6 >= rectangle2.position.y
             )
 }
 
@@ -169,6 +169,10 @@ const death = () => {
         playAgainButton.innerHTML = "PlayAgain"
         playAgainButton.id = "PlayAgainButton"
         document.getElementById("parent").appendChild(playAgainButton)
+        const mainMenu = document.createElement("button")
+        mainMenu.innerHTML = "Menu"
+        mainMenu.id = "MainMenu"
+        document.getElementById("parent").appendChild(mainMenu)
     }
 }
 
