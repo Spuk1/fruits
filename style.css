@@ -197,7 +197,7 @@ position: relative;
 #PlayAgainButton {
     position: absolute;
     top: 48%;
-    left: 40;
+    left: 40%;
     background-color: #1a1616c3;
     color: aliceblue;
     font-weight: bold;

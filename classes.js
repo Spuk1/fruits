@@ -12,7 +12,7 @@ class Sprite {
         meleeDmg = 0,
         rangedDmg = 0,
         Speed = 0,
-        lifesteal = 0
+        lifesteal = 0,
     }){
         this.id = id
         this.position = position
@@ -29,6 +29,7 @@ class Sprite {
         this.image = new Image()
         this.image.src = image.src
         this.opacity = 1
+        this.maxHP = 20
         this.image.onload = () => {
             this.width = this.image.width /this.frames.max
             this.height = this.image.height
@@ -60,84 +61,25 @@ class Sprite {
             else this.frames.val = 0
     }
 }
-    enemyAI = async() =>{   
-        await new Promise(r => setTimeout(r, 100))
-                var movable = true
-                if(this.position.x + this.width -10 <= player.position.x){
-                    this.image.src = this.sprites.right
-                    for(let i=0;i<enemies.length;i++){
-                        let e = enemies[i]
-                        if(e === this) continue
-                        movable = true
-                        if(getCollisionX(this,e)){
-                            movable = false
-                            this.position.x, e.position.x += 1.75
-                            break
-                            //console.log("should be false"
-                        }
-                    }
-                      if(movable)  this.position.x += 2.5
-                } 
-                else if(this.position.x >= player.position.x +player.width-10){
-                    this.image.src = this.sprites.left
-                    for(let i=0;i<enemies.length;i++){
-                        let e = enemies[i]
-                        if(e === this) continue
-                        movable = true
-                        if(getCollisionX(this, e)){
-                            movable = false
-                            this.position.x, e.position.x -= 1.75
-                            //console.log("should be false")
-                            break
-                        }
-                } 
-                if(movable) this.position.x -=2.5
-            }
-                if(this.position.y >= player.position.y + player.height) {
-                    for(let i=0;i<enemies.length;i++){
-                        const e = enemies[i]
-                        if(e === this) continue
-                        movable=true
-                        if(getCollisionY(this, e)){
-                            movable = false
-                            this.position.y, e.position.y -= 1.75
-                            //console.log("should be false")
-                            break
-                        }}
-                    if(movable) this.position.y -=1.5
-                }
-                else if(this.position.y + this.height/2 <= player.position.y) {
-                    for(let i=0;i<enemies.length;i++){
-                        const e = enemies[i]
-                        if(e === this) continue
-                        movable = true
-                        if(getCollisionY(this,e)){
-                            movable = false
-                            this.position.y, e.position.y += 1.75
-                            //console.log("should be false")
-                            break
-                        }}
-                    if(movable) this.position.y +=2.5
-                }
-            
-                    
-}
+
     recieveDmg = async() => {
-        dmgCD = true
         document.getElementById("health").innerHTML = this.hp
         await new Promise(r => setTimeout(r, 200))
         if(!dmgCD) {
             for(let i=0; i<enemies.length;i++) {
             let enemy = enemies[i]
             if(getCollision(this, enemy)) {
+                dmgCD = true
                 this.hp -= 4
                 gsap.to(this, {
                     opacity: 0,
                     repeat: 5,
                     yoyo: true,
                     duration: 0.08,
-                onComplete(){
+                onComplete: async() => {
                     this.opacity=1
+                    await new Promise(r => setTimeout(r, 1000))
+                    dmgCD = false
                 }  }
                 );
                 break
@@ -145,31 +87,97 @@ class Sprite {
     }
 }
     death()   
-    await new Promise(r => setTimeout(r, 1000))
-    dmgCD = false
+    
 }
 }
 
-const getCollisionX = (obj1, obj2) => {
-    return (obj1.position.x + obj1.width >= obj2.position.x &&
-        obj1.position.x <= obj2.position.x + obj2.width)
+class Enemy extends Sprite {
+    constructor({
+        id,
+        position,
+        image,
+        frames= {max: 1, hold: 10},
+        animate = true,
+        sprites,
+        hp = 20,
+        Speed = 2,
+        damage = 3
+    }){
+    super({
+        position, image, animate, frames, sprites
+    })
+    this.hp = hp
+    this.damage = this.damage
+    this.Speed = Speed
+  }
+  enemyAI = async() =>{   
+    await new Promise(r => setTimeout(r, 100))
+            var movable = true
+            if(this.position.x + this.width -10 <= player.position.x){
+                this.image.src = this.sprites.right
+                for(let i=0;i<enemies.length;i++){
+                    let e = enemies[i]
+                    if(e === this) continue
+                    movable = true
+                    if(getCollisionX(this,e)){
+                        movable = false
+                        this.position.x, e.position.x += this.Speed * 0.8
+                        break
+                        //console.log("should be false"
+                    }
+                }
+                  if(movable)  this.position.x += this.Speed
+            } 
+            else if(this.position.x >= player.position.x +player.width-10){
+                this.image.src = this.sprites.left
+                for(let i=0;i<enemies.length;i++){
+                    let e = enemies[i]
+                    if(e === this) continue
+                    movable = true
+                    if(getCollisionX(this, e)){
+                        movable = false
+                        this.position.x, e.position.x -= this.Speed * 0.8
+                        //console.log("should be false")
+                        break
+                    }
+            } 
+            if(movable) this.position.x -=this.Speed
+        }
+            if(this.position.y >= player.position.y + player.height) {
+                for(let i=0;i<enemies.length;i++){
+                    const e = enemies[i]
+                    if(e === this) continue
+                    movable=true
+                    if(getCollisionY(this, e)){
+                        movable = false
+                        this.position.y, e.position.y -= this.Speed * 0.8
+                        //console.log("should be false")
+                        break
+                    }}
+                if(movable) this.position.y -= this.Speed*0.8
+            }
+            else if(this.position.y + this.height/2 <= player.position.y) {
+                for(let i=0;i<enemies.length;i++){
+                    const e = enemies[i]
+                    if(e === this) continue
+                    movable = true
+                    if(getCollisionY(this,e)){
+                        movable = false
+                        this.position.y, e.position.y += this.Speed*0.8
+                        //console.log("should be false")
+                        break
+                    }}
+                if(movable) this.position.y += this.Speed
+            }
+        
+                
+}
 }
 
 
-const getCollisionY = (obj1, obj2) => {
-    return (obj1.position.y <= obj2.position.y + obj2.height/2 &&
-        obj1.position.y + obj1.height/2 >= obj2.position.y)
-}
 
 
-const getCollision =(rectangle1, rectangle2) => {
-    return (
-            rectangle1.position.x + rectangle1.width/1.2 >= rectangle2.position.x &&
-            rectangle1.position.x <= rectangle2.position.x + rectangle2.width/1.2 &&
-            rectangle1.position.y <= rectangle2.position.y + rectangle2.height &&
-            rectangle1.position.y + rectangle1.height >= rectangle2.position.y
-            )
-}
+
 class WeaponMelee {
     constructor({
         position = player.position,

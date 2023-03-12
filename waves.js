@@ -30,7 +30,7 @@ const spawnEnemyEmby = (amount) => {
 const spawnEnemyFruitFly = (amount) => {
     for(i = 0; i<amount;i++) {
         enemies.push(
-            new Sprite({
+            new Enemy({
                 id: i,
                 position:{
                     x: Math.floor(Math.random()* canvas.width),

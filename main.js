@@ -68,9 +68,28 @@ const player = new Sprite({
     opacity: 1
 })
 
-//spawn Enemies
+//Collision detection
+
+const getCollisionX = (obj1, obj2) => {
+    return (obj1.position.x + obj1.width >= obj2.position.x &&
+        obj1.position.x <= obj2.position.x + obj2.width)
+}
 
 
+const getCollisionY = (obj1, obj2) => {
+    return (obj1.position.y <= obj2.position.y + obj2.height/2 &&
+        obj1.position.y + obj1.height/2 >= obj2.position.y)
+}
+
+
+const getCollision =(rectangle1, rectangle2) => {
+    return (
+            rectangle1.position.x + rectangle1.width/1.7 >= rectangle2.position.x &&
+            rectangle1.position.x <= rectangle2.position.x + rectangle2.width/1.7 &&
+            rectangle1.position.y <= rectangle2.position.y + rectangle2.height/1.7 &&
+            rectangle1.position.y + rectangle1.height/1.7 >= rectangle2.position.y
+            )
+}
 
 
 //Add Event listener Movement
