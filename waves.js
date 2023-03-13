@@ -3,7 +3,7 @@ const enemies = []
 const spawnEnemyEmby = (amount) => {
     for(i = 0; i<amount;i++) {
         enemies.push(
-            new Sprite({
+            new Enemy({
                 id: i,
                 position:{
                     x: Math.floor(Math.random()* canvas.width),
@@ -12,8 +12,8 @@ const spawnEnemyEmby = (amount) => {
                 sprites: {
                     up:embyImageSprite,
                     down:embyImageFront,
-                    left:embyImageFront,
-                    right:embyImageSprite
+                    left:"./images/enemies/EmbyFront.png",
+                    right:"./images/enemies/EmbyFront.png"
                 },
                 image: {
                     src: "./images/enemies/EmbyFront.png"
@@ -79,6 +79,7 @@ const wave1 = async(diff) => {
 }
 
 const wave2 = async(diff) => {
+    player.hp.current = player.hp.max
     document.getElementById("parent").appendChild(moneyEle)
     moneyEle.style.right = "90%"
     document.getElementById("menu").style.display = "none"
@@ -99,6 +100,7 @@ const wave2 = async(diff) => {
     currentWave += 1
 }
 const wave3 = async(diff) => {
+
     document.getElementById("parent").appendChild(moneyEle)
     moneyEle.style.right = "90%"
     document.getElementById("menu").style.display = "none"

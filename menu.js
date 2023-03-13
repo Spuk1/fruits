@@ -14,7 +14,14 @@ const displayPlayerStats = () => {
     statsHeader.style.textAlign = "center"
     statsHeader.innerHTML = "Stats"
     statsHeader.style.color = "aliceblue"
+    let hpEle = document.createElement("p")
+    hpEle.id = "stats"
+    hpEle.innerHTML = `HP: ` + player.hp.max;
+    hpEle.style.textAlign = "left";
+    hpEle.style.margin = "5px 0 0 15px"
+    hpEle.style.color = "aliceblue"
     document.getElementById(`char_info_box`).appendChild(statsHeader);
+    document.getElementById(`char_info_box`).appendChild(hpEle);
     for(let key in player){
         if(key != "id"&& key != "position" && key != "image" && key!= "frames" && key!= "animate" && key!= "sprites" && key != "money" && key != "height" && key != "width" && key != "recieveDmg" && key != "opacity" && key != "hp" && key != "_gsap") {
             let textElement = document.createElement("p")
@@ -39,6 +46,8 @@ const getShopItems = async() => {
         removeChildElements(node)
     }
     await new Promise(r => setTimeout(r, 100))
+
+
     for(i=0;i<4;i++) {
         let img = document.createElement("img")
         let nameText = document.createElement("p")

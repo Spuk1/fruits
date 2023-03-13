@@ -7,7 +7,7 @@ class Sprite {
         frames= {max: 1, hold: 10},
         animate = false,
         sprites,
-        hp = 20,
+        hp = {max: 20, current: 20},
         money = 0,
         meleeDmg = 0,
         rangedDmg = 0,
@@ -20,7 +20,6 @@ class Sprite {
         this.frames = {...frames, val:0, elapsed:0}
         this.animate = animate
         this.sprites = sprites
-        this.maxHP = 20
         this.hp = hp
         this.money = money,
         this.meleeDmg = meleeDmg
@@ -63,14 +62,14 @@ class Sprite {
 }
 
     recieveDmg = async() => {
-        document.getElementById("health").innerHTML = this.hp
+        document.getElementById("health").innerHTML = this.hp.current
         await new Promise(r => setTimeout(r, 200))
         if(!dmgCD) {
             for(let i=0; i<enemies.length;i++) {
             let enemy = enemies[i]
             if(getCollision(this, enemy)) {
                 dmgCD = true
-                this.hp -= enemy.damage
+                this.hp.current -= enemy.damage
                 gsap.to(this, {
                     opacity: 0,
                     repeat: 5,
@@ -326,6 +325,7 @@ class WeaponMelee {
 
         }
         applyStats(this)
+
         displayPlayerStats()
         }
 }
@@ -334,8 +334,9 @@ class WeaponMelee {
 
 
 const applyStats = (obj) => {
+    player.hp.max += obj.hp
     for(let key in obj) {
-        if(key != "image" && key != "buyItem" && (obj[key] < 0 || obj[key] > 0) && key != "damage" && key != "attackSpeed" && key != "price")
+        if(key != "image" && key != "buyItem" && (obj[key] < 0 || obj[key] > 0) && key != "damage" && key != "attackSpeed" && key != "price" && key != "hp")
         player[key] += obj[key]
     }
 }

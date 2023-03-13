@@ -3,7 +3,7 @@ const c = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 600;
 
-var roundTime = 20
+var roundTime = 2
 var currentWave = 1
 const waves = [wave1, wave2, wave3, wave4, wave5]
 var rerollcount = 0
@@ -65,8 +65,10 @@ const player = new Sprite({
     },
     money: 0,
     Speed: 24,
-    opacity: 1,
-    hp: 5
+    hp: {
+        max:20,
+        current:20
+    }
 })
 
 //Collision detection
@@ -183,7 +185,7 @@ const death = () => {
 }
 
 const checkHealth = (obj, i) => {
-    if (obj.hp <= 0){
+    if (obj.hp.current <= 0){
         enemies.splice(i,1)
         player.money += 3
     }
