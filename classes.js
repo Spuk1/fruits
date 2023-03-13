@@ -13,6 +13,9 @@ class Sprite {
         rangedDmg = 0,
         Speed = 0,
         lifesteal = 0,
+        dodge = 0,
+        range = 0,
+        hpregen = 0
     }){
         this.id = id
         this.position = position
@@ -33,6 +36,9 @@ class Sprite {
             this.width = this.image.width /this.frames.max
             this.height = this.image.height
         }
+        this.dodge = dodge,
+        this.range = range,
+        this.hpregen = hpregen
     
     }
     draw() {
@@ -69,6 +75,7 @@ class Sprite {
             let enemy = enemies[i]
             if(getCollision(this, enemy)) {
                 dmgCD = true
+                if(Math.random() * 100 >= this.dodge)
                 this.hp.current -= enemy.damage
                 gsap.to(this, {
                     opacity: 0,
@@ -184,12 +191,7 @@ class WeaponMelee {
         attackSpeed = 3000,
         image,
         isAttacking = false,
-        onCooldown = false,
-        meleeDmg,
-        rangedDmg,
-        Speed,
-        hp,
-        lifesteal
+        onCooldown = false
     }){
     this.position = position
     this.slot = slot
@@ -199,18 +201,13 @@ class WeaponMelee {
     this.isAttacking = isAttacking
     this.onCooldown = onCooldown
     this.image.src = image.src
-    this.meleeDmg = meleeDmg
-    this.rangedDmg = rangedDmg
-    this. Speed = Speed
-    this.hp = hp
-    this.lifesteal = lifesteal
     }
     draw(){
         c.drawImage(this.image, this.position.x, this.position.y);
     }
     getEnemyDist = (obj, i) => {
         let enemyDistance = Math.sqrt(Math.pow((player.position.x - obj.position.x),2) + Math.pow((player.position.y - obj.position.x),2));
-        if(enemyDistance < 200 && !this.onCooldown) {
+        if(enemyDistance < (200 + player.range*0.5) && !this.onCooldown) {
             this.attack(obj, i)
         }
     }
@@ -222,7 +219,9 @@ class WeaponMelee {
                 y: obj.position.y + 50,
                 onComplete: () => {
                      // Enemy gets hit
-                    obj.hp -= this.damage + this.meleeDmg
+                    obj.hp -= this.damage + player.meleeDmg
+                    if(!(player.hp.current + player.lifesteal > player.hp.max))
+                    player.hp.current += player.lifesteal
                     checkHealth(obj, i)
                     gsap.to(this.position, {
                         x: player.position.x + 50* Math.cos(this.slot*(360/6)),
@@ -249,7 +248,7 @@ class WeaponMelee {
             Speed,
             hp,
             lifesteal,
-            type
+            type,
         }){
         this.name = name
         this.image = image
@@ -266,14 +265,17 @@ class WeaponMelee {
     class WeaponShop {
         constructor({
             name,
-            damage,
-            attackSpeed,
+            damage = 0,
+            attackSpeed = 0,
             image,
-            meleeDmg,
-            rangedDmg,
-            Speed,
-            hp,
-            lifesteal,
+            meleeDmg = 0,
+            rangedDmg = 0,
+            Speed = 0,
+            hp = 0,
+            lifesteal = 0,
+            range = 0,
+            dodge = 0,
+            hpregen = 0,
             type,
             price
         }){
@@ -288,6 +290,9 @@ class WeaponMelee {
         this.lifesteal = lifesteal
         this.type = type
         this.price = price
+        this.range = range
+        this.dodge = dodge
+        this.hpregen = hpregen
         }
         buyItem = () => {
             player.money -= this.price

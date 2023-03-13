@@ -31,6 +31,7 @@ const Bulldozer = new WeaponShop({
     Speed: -3,
     rangedDmg: -3,
     hp:+5,
+    hpregen:2,
     meleeDmg: +1,
     type: "item",
     price: 37

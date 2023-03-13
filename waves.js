@@ -55,27 +55,36 @@ const spawnEnemyFruitFly = (amount) => {
     }
 }
 
+const lifeReg = () => {
+    if((player.hp.current + player.hpregen/5) < player.hp.max){
+        player.hp.current += player.hpregen /5
+    } else player.hp.current = player.hp.max
+}
 const wave1 = async(diff) => {
     player.money = 1000
+    player.hp.max = 20
     document.getElementById("parent").appendChild(moneyEle)
     moneyEle.style.right = "90%"
     time = 0;
     spawnEnemyFruitFly(2*diff)
     document.getElementById("wave").innerHTML = "Wave 1"
         while(time <= roundTime && !isDead) {
-            if (time %5 === 0) {
+            if (time %7 === 0) {
                 spawnEnemyFruitFly(2*diff)
             }
             document.getElementById("timer").innerHTML = roundTime -time;
+            lifeReg()
             await new Promise(r => setTimeout(r, 1000))
             time++
     }
     
     enemies.splice(0,enemies.length)
-    if(!isDead)
-    randomizeShop(currentWave);
-    document.getElementById("menu").style.display = "inline-block"
-    currentWave += 1
+    if(!isDead) {
+        randomizeShop(currentWave);
+        document.getElementById("menu").style.display = "inline-block"
+        currentWave += 1
+    }
+    
 }
 
 const wave2 = async(diff) => {
@@ -86,18 +95,22 @@ const wave2 = async(diff) => {
     time = 0;
     spawnEnemyEmby(2*diff)
     document.getElementById("wave").innerHTML = "Wave" + currentWave
-    while(time <= roundTime) {
+    while(time <= roundTime && !isDead) {
         if (time %5 === 0) {
             spawnEnemyEmby(2*diff)
         }
         document.getElementById("timer").innerHTML = roundTime -time;
+        lifeReg()
         await new Promise(r => setTimeout(r, 1000))
         time++;
     }
     enemies.splice(0,enemies.length)
-    randomizeShop(currentWave);
-    document.getElementById("menu").style.display = "inline-block"
-    currentWave += 1
+    if(!isDead) {
+        randomizeShop(currentWave);
+        document.getElementById("menu").style.display = "inline-block"
+        currentWave += 1
+    }
+   
 }
 const wave3 = async(diff) => {
 
@@ -107,18 +120,21 @@ const wave3 = async(diff) => {
     time = 0;
     spawnEnemyEmby(2*diff)
     document.getElementById("wave").innerHTML = "Wave" + currentWave
-    while(time <= roundTime) {
+    while(time <= roundTime && !isDead) {
         if (time %5 === 0) {
             spawnEnemyEmby(2*diff)
         }
         document.getElementById("timer").innerHTML = roundTime -time;
+        lifeReg()
         await new Promise(r => setTimeout(r, 1000))
         time++;
     }
     enemies.splice(0,enemies.length)
-    randomizeShop(currentWave);
-    document.getElementById("menu").style.display = "inline-block"
-    currentWave += 1
+    if(!isDead) {
+        randomizeShop(currentWave);
+        document.getElementById("menu").style.display = "inline-block"
+        currentWave += 1
+    }
 }
 const wave4 = async(diff) => {
     document.getElementById("parent").appendChild(moneyEle)
@@ -127,18 +143,22 @@ const wave4 = async(diff) => {
     time = 0;
     spawnEnemyEmby(2*diff)
     document.getElementById("wave").innerHTML = "Wave" + currentWave
-    while(time <= roundTime) {
+    while(time <= roundTime && !isDead) {
         if (time %5 === 0) {
             spawnEnemyEmby(2*diff)
         }
         document.getElementById("timer").innerHTML = roundTime -time;
+        lifeReg()
         await new Promise(r => setTimeout(r, 1000))
         time++;
     }
     enemies.splice(0,enemies.length)
-    randomizeShop(currentWave);
-    document.getElementById("menu").style.display = "inline-block"
-    currentWave += 1
+    if(!isDead) {
+        randomizeShop(currentWave);
+        document.getElementById("menu").style.display = "inline-block"
+        currentWave += 1
+    }
+    
 }
 const wave5 = async(diff) => {
     document.getElementById("parent").appendChild(moneyEle)
@@ -147,18 +167,22 @@ const wave5 = async(diff) => {
     time = 0;
     spawnEnemyEmby(2*diff)
     document.getElementById("wave").innerHTML = "Wave" + currentWave
-    while(time <= roundTime) {
+    while(time <= roundTime && !isDead) {
         if (time %5 === 0) {
             spawnEnemyEmby(2*diff)
         }
         document.getElementById("timer").innerHTML = roundTime -time;
+        lifeReg()
         await new Promise(r => setTimeout(r, 1000))
         time++;
     }
     enemies.splice(0,enemies.length)
-    randomizeShop(currentWave);
-    document.getElementById("menu").style.display = "inline-block"
-    currentWave += 1
+    if(!isDead) {
+        randomizeShop(currentWave);
+        document.getElementById("menu").style.display = "inline-block"
+        currentWave += 1
+    }
+    
 }
 
 const nextWave = () => {

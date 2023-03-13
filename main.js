@@ -3,7 +3,7 @@ const c = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 600;
 
-var roundTime = 2
+var roundTime = 20
 var currentWave = 1
 const waves = [wave1, wave2, wave3, wave4, wave5]
 var rerollcount = 0
@@ -162,7 +162,7 @@ const attack = async() => {
 
 var isDead = false
 const death = () => {
-    if(player.hp <= 0 && !isDead) {
+    if(player.hp.current <= 0 && !isDead) {
         roundTime = 1000
         moving = false
         const deathHeader = document.createElement("h1")
@@ -185,7 +185,7 @@ const death = () => {
 }
 
 const checkHealth = (obj, i) => {
-    if (obj.hp.current <= 0){
+    if (obj.hp <= 0){
         enemies.splice(i,1)
         player.money += 3
     }
