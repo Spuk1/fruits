@@ -103,8 +103,8 @@ const wave2 = async(diff) => {
         document.getElementById("timer").innerHTML = roundTime -time;
 
         enemies.forEach(enemy => {
-            if(!enemy.onCooldown)
-            enemy.attack()})
+            enemy.getPlayerDist()
+        })
         lifeReg()
         await new Promise(r => setTimeout(r, 1000))
         time++;

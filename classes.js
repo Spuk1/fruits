@@ -115,74 +115,75 @@ class Enemy extends Sprite {
     this.damage = damage
     this.Speed = Speed,
     this.onCooldown = false
+    this.movable = true
   }
   enemyAI = async() =>{   
     await new Promise(r => setTimeout(r, 100))
-            var movable = true
+            this.movable = true
             if(this.position.x + this.width -10 <= player.position.x){
                 this.image.src = this.sprites.right
                 for(let i=0;i<enemies.length;i++){
                     let e = enemies[i]
                     if(e === this) continue
-                    movable = true
+                    this.movable = true
                     if(getCollisionX(this,e)){
-                        movable = false
+                        this.movable = false
                         this.position.x, e.position.x += this.Speed * 0.8
                         break
                         //console.log("should be false"
                     }
                 }
-                  if(movable)  this.position.x += this.Speed
+                  if(this.movable)  this.position.x += this.Speed
             } 
             else if(this.position.x >= player.position.x +player.width-10){
                 this.image.src = this.sprites.left
                 for(let i=0;i<enemies.length;i++){
                     let e = enemies[i]
                     if(e === this) continue
-                    movable = true
+                    this.movable = true
                     if(getCollisionX(this, e)){
-                        movable = false
+                        this.movable = false
                         this.position.x, e.position.x -= this.Speed * 0.8
                         //console.log("should be false")
                         break
                     }
             } 
-            if(movable) this.position.x -=this.Speed
+            if(this.movable) this.position.x -=this.Speed
         }
             if(this.position.y >= player.position.y + player.height) {
                 for(let i=0;i<enemies.length;i++){
                     const e = enemies[i]
                     if(e === this) continue
-                    movable=true
+                    this.movable=true
                     if(getCollisionY(this, e)){
-                        movable = false
+                        this.movable = false
                         this.position.y, e.position.y -= this.Speed * 0.8
                         //console.log("should be false")
                         break
                     }}
-                if(movable) this.position.y -= this.Speed*0.8
+                if(this.movable) this.position.y -= this.Speed*0.8
             }
             else if(this.position.y + this.height/2 <= player.position.y) {
                 for(let i=0;i<enemies.length;i++){
                     const e = enemies[i]
                     if(e === this) continue
-                    movable = true
+                    this.movable = true
                     if(getCollisionY(this,e)){
-                        movable = false
+                        this.movable = false
                         this.position.y, e.position.y += this.Speed*0.8
                         //console.log("should be false")
                         break
                     }}
-                if(movable) this.position.y += this.Speed
+                if(this.movable) this.position.y += this.Speed
             }
         
                 
 }
 attack = () => {
     this.onCooldown = true;
-    
+    this.movable = false
     gsap.to(this, {
-        opacity: 0.4,
+        opacity: 0.6,
         repeat: 2,
         yoyo: true,
         duration: 0.2,
@@ -190,8 +191,8 @@ attack = () => {
             let currentPosition = this.position
             this.opacity = 1
             gsap.to(this.position, {
-                x: player.position.x +50,
-                y: player.position.y +50,
+                x: player.position.x + player.width/2,
+                y: player.position.y - player.height/2,
                 onComplete: () => {
                     gsap.to(this.position, {
                         x: currentPosition.x,
@@ -199,6 +200,7 @@ attack = () => {
                         onComplete: async() => {
                             await new Promise(r => setTimeout(r, 5000));
                             this.onCooldown = false;
+                            this.movable = true
                 }
             })
         }
