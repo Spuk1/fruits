@@ -106,14 +106,15 @@ class Enemy extends Sprite {
         sprites,
         hp = 20,
         Speed = 2,
-        damage = 3
+        damage = 3,
     }){
     super({
         position, image, animate, frames, sprites
     })
     this.hp = hp
     this.damage = damage
-    this.Speed = Speed
+    this.Speed = Speed,
+    this.onCooldown = false
   }
   enemyAI = async() =>{   
     await new Promise(r => setTimeout(r, 100))
@@ -177,6 +178,41 @@ class Enemy extends Sprite {
         
                 
 }
+attack = () => {
+    this.onCooldown = true;
+    
+    gsap.to(this, {
+        opacity: 0.4,
+        repeat: 2,
+        yoyo: true,
+        duration: 0.2,
+        onComplete: () => {
+            let currentPosition = this.position
+            this.opacity = 1
+            gsap.to(this.position, {
+                x: player.position.x +50,
+                y: player.position.y +50,
+                onComplete: () => {
+                    gsap.to(this.position, {
+                        x: currentPosition.x,
+                        y: currentPosition.y,
+                        onComplete: async() => {
+                            await new Promise(r => setTimeout(r, 5000));
+                            this.onCooldown = false;
+                }
+            })
+        }
+    })
+        }
+    })
+    
+}
+getPlayerDist = (obj, i) => {
+    let Distance = Math.sqrt(Math.pow((this.position.x - player.position.x),2) + Math.pow((this.position.y - player.position.y),2));
+    if(Distance < (300) && !this.onCooldown) {
+        this.attack()
+    }
+}
 }
 
 
@@ -206,7 +242,7 @@ class WeaponMelee {
         c.drawImage(this.image, this.position.x, this.position.y);
     }
     getEnemyDist = (obj, i) => {
-        let enemyDistance = Math.sqrt(Math.pow((player.position.x - obj.position.x),2) + Math.pow((player.position.y - obj.position.x),2));
+        let enemyDistance = Math.sqrt(Math.pow((player.position.x - obj.position.x),2) + Math.pow((player.position.y - obj.position.y),2));
         if(enemyDistance < (200 + player.range*0.5) && !this.onCooldown) {
             this.attack(obj, i)
         }

@@ -10,8 +10,6 @@ var rerollcount = 0
 var rerollPrice = 7
 
 
-c.fillRect(0,0, canvas.width, canvas.height);
-
 
 
 //Player Image
@@ -282,5 +280,5 @@ const animate = () => {
     player.recieveDmg()
     attack()
 }
-wave1(1)
+wave2(1)
 animate()

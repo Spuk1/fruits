@@ -21,7 +21,8 @@ const spawnEnemyEmby = (amount) => {
                 frames: {
                     max:4,
                     hold:8
-                }
+                },
+                animate:true
             })
         )
     }
@@ -100,6 +101,10 @@ const wave2 = async(diff) => {
             spawnEnemyEmby(2*diff)
         }
         document.getElementById("timer").innerHTML = roundTime -time;
+
+        enemies.forEach(enemy => {
+            if(!enemy.onCooldown)
+            enemy.attack()})
         lifeReg()
         await new Promise(r => setTimeout(r, 1000))
         time++;
