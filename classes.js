@@ -15,7 +15,8 @@ class Sprite {
         lifesteal = 0,
         dodge = 0,
         range = 0,
-        hpregen = 0
+        hpregen = 0,
+        armor = 0
     }){
         this.id = id
         this.position = position
@@ -24,11 +25,12 @@ class Sprite {
         this.animate = animate
         this.sprites = sprites
         this.hp = hp
-        this.money = money,
+        this.money = money
         this.meleeDmg = meleeDmg
         this.rangedDmg = rangedDmg
         this. Speed = Speed
         this.lifesteal = lifesteal
+        this.armor = armor
         this.image = new Image()
         this.image.src = image.src
         this.opacity = 1
@@ -36,8 +38,8 @@ class Sprite {
             this.width = this.image.width /this.frames.max
             this.height = this.image.height
         }
-        this.dodge = dodge,
-        this.range = range,
+        this.dodge = dodge
+        this.range = range
         this.hpregen = hpregen
     
     }
@@ -68,7 +70,7 @@ class Sprite {
 }
 
     recieveDmg = async() => {
-        document.getElementById("health").innerHTML = this.hp.current
+        document.getElementById("health").innerHTML = Math.floor((this.hp.current))
         await new Promise(r => setTimeout(r, 200))
         if(!dmgCD) {
             for(let i=0; i<enemies.length;i++) {
@@ -76,7 +78,7 @@ class Sprite {
             if(getCollision(this, enemy)) {
                 dmgCD = true
                 if(Math.random() * 100 >= this.dodge)
-                this.hp.current -= enemy.damage
+                this.hp.current -= enemy.damage * (1+this.armor / 100)
                 gsap.to(this, {
                     opacity: 0,
                     repeat: 5,
@@ -314,6 +316,7 @@ class WeaponMelee {
             range = 0,
             dodge = 0,
             hpregen = 0,
+            armor = 0,
             type,
             price
         }){
@@ -331,6 +334,7 @@ class WeaponMelee {
         this.range = range
         this.dodge = dodge
         this.hpregen = hpregen
+        this.armor = armor
         }
         buyItem = () => {
             player.money -= this.price

@@ -280,5 +280,5 @@ const animate = () => {
     player.recieveDmg()
     attack()
 }
-wave2(1)
+wave1(1)
 animate()
