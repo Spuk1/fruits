@@ -122,7 +122,7 @@ class Enemy extends Sprite {
   enemyAI = async() =>{   
     await new Promise(r => setTimeout(r, 100))
             this.movable = true
-            if(this.position.x + this.width -10 <= player.position.x){
+            if(this.position.x + this.width /2 <= player.position.x){
                 this.image.src = this.sprites.right
                 for(let i=0;i<enemies.length;i++){
                     let e = enemies[i]
@@ -137,7 +137,7 @@ class Enemy extends Sprite {
                 }
                   if(this.movable)  this.position.x += this.Speed
             } 
-            else if(this.position.x >= player.position.x +player.width-10){
+            else if(this.position.x >= player.position.x +player.width/2){
                 this.image.src = this.sprites.left
                 for(let i=0;i<enemies.length;i++){
                     let e = enemies[i]
@@ -152,7 +152,7 @@ class Enemy extends Sprite {
             } 
             if(this.movable) this.position.x -=this.Speed
         }
-            if(this.position.y >= player.position.y + player.height) {
+            if(this.position.y >= player.position.y + player.height/2) {
                 for(let i=0;i<enemies.length;i++){
                     const e = enemies[i]
                     if(e === this) continue
@@ -385,5 +385,11 @@ const applyStats = (obj) => {
     for(let key in obj) {
         if(key != "image" && key != "buyItem" && (obj[key] < 0 || obj[key] > 0) && key != "damage" && key != "attackSpeed" && key != "price" && key != "hp")
         player[key] += obj[key]
+    }
+    if(player.armor > 30) {
+        player.armor = 30
+    }
+    if(player.dodge > 60) {
+        player.dodge = 60 
     }
 }
