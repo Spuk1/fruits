@@ -5,7 +5,6 @@ canvas.height = 600;
 
 var roundTime = 20
 var currentWave = 1
-const waves = [wave1, wave2, wave3, wave4, wave5]
 var rerollcount = 0
 var rerollPrice = 7
 
@@ -280,5 +279,5 @@ const animate = () => {
     player.recieveDmg()
     attack()
 }
-wave1(1)
+wave(1)
 animate()

@@ -99,7 +99,7 @@ class Sprite {
 }
 }
 
-class Enemy extends Sprite {
+class EnemyMelee extends Sprite {
     constructor({
         position,
         image,
@@ -220,7 +220,60 @@ getPlayerDist = (obj, i) => {
 }
 
 
-
+class EnemyRanged extends EnemyMelee{
+    constructor({
+        position,
+        image,
+        frames= {max: 1, hold: 10},
+        animate = true,
+        sprites,
+        hp = 20,
+        Speed = 2,
+        damage = 3,
+        state = 0,
+        onCooldown = 0,
+        movable,
+        isAttacking = false
+    }){
+    super({
+        position, image, animate, frames, sprites, hp, damage, Speed, onCooldown, movable
+    })
+    this.state = state
+    this.coolDown = onCooldown
+    this.move = true
+    this.isAttacking = isAttacking
+}
+    enemyAI = () =>{
+        switch (this.state){
+            case 0:
+                if(this.move)
+                this.run()
+                break
+            case 1:
+                if(!this.isAttacking)
+                this.rAttack()
+                break
+        }
+    }
+    run = async() =>{
+        this.move = false
+        if(this.coolDown === 3){
+            this.state = 1
+        }
+        console.log("running")
+        await new Promise(r => setTimeout(r, 1000))
+        this.coolDown+=1
+        console.log(this.coolDown)
+        this.move = true
+    }
+    rAttack(){
+        this.isAttacking = true
+        console.log("attack")
+        this.isAttacking = false
+        this.state = 0
+        this.coolDown = 0
+    }
+}
 
 
 class WeaponMelee {
