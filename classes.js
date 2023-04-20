@@ -20,7 +20,8 @@ class Sprite {
         range = 0,
         hpregen = 0,
         armor = 0,
-        rotation = 0
+        rotation = 0,
+        damage = 0
     }){
         this.id = id
         this.position = position
@@ -46,6 +47,7 @@ class Sprite {
         this.range = range
         this.hpregen = hpregen
         this.rotation = rotation
+        this.damage = damage
     }
     draw() {
         c.save()
@@ -100,6 +102,26 @@ class Sprite {
                 break
         }
     }
+    for(let i=0; i<projectiles.length;i++) {
+        let projectile = projectiles[i]
+        if(getCollision(this, projectile)) {
+            dmgCD = true
+            if(Math.random() * 100 >= this.dodge)
+            this.hp.current -= projectile.damage * (1+this.armor / 100)
+            gsap.to(this, {
+                opacity: 0,
+                repeat: 5,
+                yoyo: true,
+                duration: 0.08,
+            onComplete: async() => {
+                this.opacity=1
+                await new Promise(r => setTimeout(r, 1000))
+                dmgCD = false
+            }  }
+            );
+            break
+    }
+}
 }
     death()   
     
@@ -126,7 +148,10 @@ class EnemyMelee extends Sprite {
     this.onCooldown = false
     this.movable = true
   }
-  enemyAI = async() =>{   
+  enemyAI(){
+    this.run()
+  }
+  run = async() =>{   
     await new Promise(r => setTimeout(r, 100))
             this.movable = true
             if(this.position.x + this.width /2 <= player.position.x){
@@ -254,7 +279,7 @@ class EnemyRanged extends EnemyMelee{
         switch (this.state){
             case 0:
                 if(this.move)
-                this.run()
+                    this.run_random()
                 break
             case 1:
                 if(!this.isAttacking)
@@ -262,15 +287,34 @@ class EnemyRanged extends EnemyMelee{
                 break
         }
     }
-    run = async() =>{
+    run_random = async() =>{
         this.move = false
         if(this.coolDown === 3){
             this.state = 1
         }
-        console.log("running")
-        await new Promise(r => setTimeout(r, 1000))
+        var velocity = {
+            x:Math.random()*2-1,
+            y:Math.random()*2-1
+        }
+        var distance = Math.sqrt(Math.pow(velocity.x,2) + Math.pow(velocity.y,2))
+        var running = true
+        var counter = 0
+        
+        while(running){
+            if(this.position.x < 100) this.position.x += Math.abs(velocity.x/distance)
+            else if(this.position.x > canvas.width - 100) this.position.x += Math.abs(velocity.x/distance)*-1
+            else if(this.position.y < 100) this.position.y += Math.abs(velocity.y/distance)
+            else if(this.position.y > canvas.height -100) this.position.y += Math.abs(velocity.y/distance)*-1
+            else {
+                this.position.x += velocity.x/distance
+                this.position.y += velocity.y/distance
+            }
+            counter += 1
+            if(counter === 150) running = false
+            await new Promise(r => setTimeout(r, 5))
+        }
+        await new Promise(r => setTimeout(r, 200))
         this.coolDown+=1
-        console.log(this.coolDown)
         this.move = true
     }
     rAttack = async() => {
@@ -281,6 +325,7 @@ class EnemyRanged extends EnemyMelee{
                 x: this.position.x,
                 y: this.position.y
             },
+            damage:4,
             image: {src: "images/fruitfly_shot.png"}
             }
         )
