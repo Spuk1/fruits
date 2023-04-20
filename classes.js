@@ -309,6 +309,8 @@ class EnemyRanged extends EnemyMelee{
                 this.position.x += velocity.x/distance
                 this.position.y += velocity.y/distance
             }
+            if(velocity.x < 0) this.image.src = this.sprites.left
+            else this.image.src = this.sprites.right
             counter += 1
             if(counter === 150) running = false
             await new Promise(r => setTimeout(r, 5))
@@ -394,8 +396,8 @@ class WeaponMelee {
             this.onCooldown = true;
             this.isAttacking = true;
             gsap.to(this.position, {
-                x: obj.position.x + 50,
-                y: obj.position.y + 50,
+                x: obj.position.x + obj.width/2,
+                y: obj.position.y + obj.height/2,
                 onComplete: () => {
                      // Enemy gets hit
                     obj.hp -= this.damage + player.meleeDmg

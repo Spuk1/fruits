@@ -23,7 +23,7 @@ const displayPlayerStats = () => {
     document.getElementById(`char_info_box`).appendChild(statsHeader);
     document.getElementById(`char_info_box`).appendChild(hpEle);
     for(let key in player){
-        if(key != "id"&& key != "position" && key != "image" && key!= "frames" && key!= "animate" && key!= "sprites" && key != "money" && key != "height" && key != "width" && key != "recieveDmg" && key != "opacity" && key != "hp" && key != "_gsap") {
+        if(key != "id"&& key != "position" && key != "image" && key!= "frames" && key!= "animate" && key!= "sprites" && key != "money" && key != "height" && key != "width" && key != "recieveDmg" && key != "opacity" && key != "hp" && key != "_gsap" && key != "rotation" && key != "damage") {
             let textElement = document.createElement("p")
                 textElement.id = "stats"
                 textElement.innerHTML = `${key}: ` + player[key];

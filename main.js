@@ -184,7 +184,7 @@ const death = () => {
 const checkHealth = (obj, i) => {
     if (obj.hp <= 0){
         enemies.splice(i,1)
-        player.money += 3
+        player.money += 5
     }
 }
 const moneyEle = document.createElement("h1")

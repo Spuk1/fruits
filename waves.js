@@ -38,8 +38,6 @@ const spawnEnemyFruitFly = (amount) => {
                     y: Math.floor(Math.random()* canvas.height)
                 },
                 sprites: {
-                    up:embyImageSprite,
-                    down:embyImageFront,
                     left:"./images/enemies/Fruchtfliege_Left.png",
                     right:"./images/enemies/Fruchtfliege_right.png"
                 },
