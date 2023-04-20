@@ -4,7 +4,7 @@ canvas.width = 1024;
 canvas.height = 600;
 
 var roundTime = 20
-var currentWave = 1
+var currentWave = 2
 var rerollcount = 0
 var rerollPrice = 7
 
@@ -16,13 +16,13 @@ const playerImageDown = new Image();
 playerImageDown.src = "./images/test_character/playerDown.png";
 
 const playerImageUp = new Image();
-playerImageUp.src = "./images/test_character/playerUp.png"
+playerImageUp.src = "./images/apfel_hinten_sprite.png";
 
 const playerImageLeft = new Image();
-playerImageLeft.src = "./images/test_character/playerLeft.png"
+playerImageLeft.src = "./images/Apfel_links.png"
 
 const playerImageRight = new Image();
-playerImageRight.src = "./images/test_character/playerRight.png"
+playerImageRight.src = "./images/apfel_rechts.png"
 
 const embyImageFront = new Image();
 embyImageFront.src = "./images/enemies/EmbyFront.png";
@@ -47,7 +47,7 @@ const player = new Sprite({
         y:canvas.height /2
     },
     image: {
-        src: playerImageDown.src
+        src: playerImageLeft.src
     },
     frames: {
         max: 4,
@@ -65,7 +65,7 @@ const player = new Sprite({
     hp: {
         max:20,
         current:20
-    }
+    },
 })
 
 //Collision detection
@@ -211,7 +211,7 @@ const animate = () => {
     
         else if (keys.s.pressed && !keys.a.pressed && !keys.d.pressed) {
             player.position.y += player.Speed/8;
-            player.image = player.sprites.down;
+            player.image = player.sprites.left;
             player.animate = true;
         }
     
@@ -276,6 +276,10 @@ const animate = () => {
             }
         }
     }
+    //draw projectiles
+    projectiles.forEach((sprite) => {
+        sprite.draw()
+    })
     player.recieveDmg()
     attack()
 }

@@ -1,4 +1,7 @@
 let dmgCD = false
+var projectiles = []
+
+
 class Sprite {
     constructor({
         id,
@@ -16,7 +19,8 @@ class Sprite {
         dodge = 0,
         range = 0,
         hpregen = 0,
-        armor = 0
+        armor = 0,
+        rotation = 0
     }){
         this.id = id
         this.position = position
@@ -41,11 +45,14 @@ class Sprite {
         this.dodge = dodge
         this.range = range
         this.hpregen = hpregen
-    
+        this.rotation = rotation
     }
     draw() {
         c.save()
         c.globalAlpha = this.opacity
+        c.translate(this.position.x + this.width / 2, this.position.y + this.height / 2)
+        c.rotate(this.rotation)
+        c.translate(-this.position.x - this.width / 2, -this.position.y - this.height / 2)
         c.drawImage(
             this.image,
             this.frames.val * this.width,
@@ -266,9 +273,43 @@ class EnemyRanged extends EnemyMelee{
         console.log(this.coolDown)
         this.move = true
     }
-    rAttack(){
+    rAttack = async() => {
         this.isAttacking = true
-        console.log("attack")
+        //Attack logic here
+        var shot = new Sprite({
+            position: {
+                x: this.position.x,
+                y: this.position.y
+            },
+            image: {src: "images/fruitfly_shot.png"}
+            }
+        )
+        var velocity = {
+            x: (player.position.x - this.position.x),
+            y: (player.position.y - this.position.y)
+        }
+        var Distance = Math.sqrt(Math.pow(velocity.x,2)+Math.pow(velocity.y,2))
+        velocity = {
+            x: velocity.x/Distance,
+            y: velocity.y/Distance
+        }
+
+        projectiles.push(shot)
+        var index = projectiles.find(element => element === shot)
+        let finished = false
+        let angle = -(Math.atan(velocity.x/velocity.y)-Math.PI/2)
+        if(velocity.y>=0) angle = angle + Math.PI
+        shot.rotation = angle
+        while(!finished){
+            shot.position.x += velocity.x
+            shot.position.y += velocity.y
+            if(shot.position.x < 0 || shot.position.y < 0 || shot.position.x > canvas.width || shot.position.y > canvas.height){
+                projectiles.splice(index,1)
+                finished = true
+        }
+            await new Promise(r => setTimeout(r, 1))
+        }
+        
         this.isAttacking = false
         this.state = 0
         this.coolDown = 0

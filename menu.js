@@ -37,7 +37,7 @@ const displayPlayerStats = () => {
 
 
 const getShopItems = async() => {
-    
+    moving = false;
     displayPlayerStats()
     document.getElementById("menu").appendChild(moneyEle)
     moneyEle.style.right = "50%"

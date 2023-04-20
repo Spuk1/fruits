@@ -61,8 +61,8 @@ const spawnEnemyWorm = (amount) => {
             new EnemyMelee({
                 id: i,
                 position:{
-                    x: Math.floor(Math.random()* canvas.width),
-                    y: Math.floor(Math.random()* canvas.height)
+                    x: Math.floor(Math.random()* (canvas.width-50)),
+                    y: Math.floor(Math.random()* (canvas.height-50))
                 },
                 sprites: {
                     left:"images/wurm links.png",
