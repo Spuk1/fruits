@@ -48,6 +48,7 @@ position: relative;
     margin: 13px 5px 5px 13px;
     background-color: #68646488;
     border-radius: 5px;
+    height: 48px;
     width: 48px;
 }
 
@@ -106,6 +107,7 @@ position: relative;
     border-radius: 5px;
     margin: 2px;
     padding: 2px;
+    height: 48px;
     width: 48px;
 }
 

@@ -14,8 +14,8 @@ const sword = new WeaponShop({
 })
 
 const dagger = new WeaponShop({
-    name: "Dagger",
-    image: {src: "assets/dagger.svg"},
+    name: "Spray",
+    image: {src: "assets/Insektenspray.png"},
     damage: 20,
     attackSpeed: 2000,
     Speed: +3,
