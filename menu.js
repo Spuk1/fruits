@@ -22,11 +22,11 @@ const displayPlayerStats = () => {
     hpEle.style.color = "aliceblue"
     document.getElementById(`char_info_box`).appendChild(statsHeader);
     document.getElementById(`char_info_box`).appendChild(hpEle);
-    for(let key in player){
-        if(key != "id"&& key != "position" && key != "image" && key!= "frames" && key!= "animate" && key!= "sprites" && key != "money" && key != "height" && key != "width" && key != "recieveDmg" && key != "opacity" && key != "hp" && key != "_gsap" && key != "rotation" && key != "damage") {
+    for(let key in player.attributes){
+        if(key != "damage") {
             let textElement = document.createElement("p")
                 textElement.id = "stats"
-                textElement.innerHTML = `${key}: ` + player[key];
+                textElement.innerHTML = `${key}: ` + player.attributes[key];
                 textElement.style.textAlign = "left";
                 textElement.style.margin = "5px 0 0 15px"
                 textElement.style.color = "aliceblue"
@@ -67,11 +67,12 @@ const getShopItems = async() => {
         document.getElementById(`item${i+1}`).appendChild(newDiv);
         document.getElementById(`item${i+1}_grid`).appendChild(nameText);
         document.getElementById(`item${i+1}_grid`).appendChild(img);
-        for(let key in chosen[i]) {
-            if(chosen[i][key] != 0 && key != "image" && key != "name" && key != "position" && key != "type" && key != "buyItem" && key != "price" && key != "recieveDmg" && key != "opacity") {
+        //display attributes
+        for(let key in chosen[i].attributes) {
+            if(chosen[i].attributes[key] != 0) {
                 let textElement = document.createElement("p")
                 textElement.id = "added"
-                textElement.innerHTML = `${key}: ` + chosen[i][key];
+                textElement.innerHTML = `${key}: ` + chosen[i].attributes[key];
                 textElement.style.textAlign = "left";
                 textElement.style.margin = "5px 0 0 15px"
                 document.getElementById(`item${i+1}`).appendChild(textElement);
@@ -92,7 +93,7 @@ document.querySelectorAll(".items").forEach((button) => {
     button.addEventListener("click", (e)=> {
         switch(e.currentTarget.id) {
             case "item1":
-                if(!(chosen[0]) || (chosen[0].type === "weapon" && ownedWeapons.length === 6)) break;
+                if(!(chosen[0]) || ((chosen[0].type === "weapon-melee" || chosen[0].type === "weapon-ranged") && ownedWeapons.length === 6)) break;
                 if(player.money >= chosen[0].price) {
                 chosen[0].buyItem();
                 delete chosen[0]
@@ -100,7 +101,7 @@ document.querySelectorAll(".items").forEach((button) => {
                 removeChildElements(node)
                 break;}
             case "item2":
-                if(!(chosen[1]) || (chosen[1].type === "weapon" && ownedWeapons.length === 6)) break;
+                if(!(chosen[1]) || ((chosen[1].type === "weapon-melee" || chosen[1].type === "weapon-ranged") && ownedWeapons.length === 6)) break;
                 if(player.money >= chosen[1].price) {
                     chosen[1].buyItem();
                     delete chosen[1]

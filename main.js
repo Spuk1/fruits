@@ -61,8 +61,8 @@ const player = new Sprite({
         left: playerImageLeft
     },
     money: 0,
-    Speed: 24,
-    hp: {
+    attributes: {Speed: 24},
+        hp: {
         max:20,
         current:20
     },
@@ -202,7 +202,7 @@ const animate = () => {
 
     if(moving) {
         if (keys.w.pressed && !keys.a.pressed && !keys.d.pressed) {
-            player.position.y -= player.Speed/8;
+            player.position.y -= player.attributes.Speed/8;
             player.image = player.sprites.up;
             player.animate = true;
             
@@ -210,46 +210,46 @@ const animate = () => {
         
     
         else if (keys.s.pressed && !keys.a.pressed && !keys.d.pressed) {
-            player.position.y += player.Speed/8;
+            player.position.y += player.attributes.Speed/8;
             player.image = player.sprites.left;
             player.animate = true;
         }
     
         else if (keys.a.pressed && !keys.w.pressed && !keys.s.pressed) {
-            player.position.x -= player.Speed /8;
+            player.position.x -= player.attributes.Speed /8;
             player.image = player.sprites.left;
             player.animate = true;
         }
     
         else if (keys.d.pressed && !keys.w.pressed && !keys.s.pressed) {
-            player.position.x += player.Speed /8;
+            player.position.x += player.attributes.Speed /8;
             player.image = player.sprites.right;
             player.animate = true;
         }
         else if (keys.d.pressed && keys.w.pressed) {
-                player.position.y -= player.Speed /12;
-                player.position.x += player.Speed /12;
+                player.position.y -= player.attributes.Speed /12;
+                player.position.x += player.attributes.Speed /12;
                 player.image = player.sprites.right;
                 player.animate = true;
     
         }
         else if (keys.a.pressed && keys.w.pressed) {
-            player.position.y -= player.Speed /12;
-            player.position.x -= player.Speed /12;
+            player.position.y -= player.attributes.Speed /12;
+            player.position.x -= player.attributes.Speed /12;
             player.image = player.sprites.left;
             player.animate = true;
     
         }
         else if (keys.d.pressed && keys.s.pressed) {
-        player.position.y += player.Speed /12;
-        player.position.x += player.Speed /12;
+        player.position.y += player.attributes.Speed /12;
+        player.position.x += player.attributes.Speed /12;
         player.image = player.sprites.right;
         player.animate = true;
     
         }   
         else if (keys.a.pressed && keys.s.pressed) {
-            player.position.y += player.Speed /12;
-            player.position.x -= player.Speed /12;
+            player.position.y += player.attributes.Speed /12;
+            player.position.x -= player.attributes.Speed /12;
             player.image = player.sprites.left;
             player.animate = true;
     
@@ -271,8 +271,8 @@ const animate = () => {
         ownedWeapons[i].draw()
         if(ownedWeapons[i].isAttacking === false) {
             ownedWeapons[i].position = {
-                x: player.position.x + 60 * Math.cos(ownedWeapons[i].slot*(360/6)),
-                y: player.position.y+ 60 * Math.sin(ownedWeapons[i].slot*(360/6))
+                x: player.position.x + 60 * Math.cos((i+1)*(360/6)),
+                y: player.position.y + 60 * Math.sin((i+1)*(360/6))
             }
         }
     }

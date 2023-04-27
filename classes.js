@@ -12,16 +12,20 @@ class Sprite {
         sprites,
         hp = {max: 20, current: 20},
         money = 0,
-        meleeDmg = 0,
-        rangedDmg = 0,
-        Speed = 0,
-        lifesteal = 0,
-        dodge = 0,
-        range = 0,
-        hpregen = 0,
-        armor = 0,
+        attributes = {
+            damage: 0,
+            attackSpeed: 0,
+            meleeDmg: 0,
+            rangedDmg: 0,
+            Speed: 0,
+            hp: 0,
+            lifesteal: 0,
+            range: 0,
+            dodge: 0,
+            hpregen: 0,
+            armor: 0,
+        },
         rotation = 0,
-        damage = 0
     }){
         this.id = id
         this.position = position
@@ -31,11 +35,7 @@ class Sprite {
         this.sprites = sprites
         this.hp = hp
         this.money = money
-        this.meleeDmg = meleeDmg
-        this.rangedDmg = rangedDmg
-        this. Speed = Speed
-        this.lifesteal = lifesteal
-        this.armor = armor
+        this.attributes = attributes
         this.image = new Image()
         this.image.src = image.src
         this.opacity = 1
@@ -43,11 +43,7 @@ class Sprite {
             this.width = this.image.width /this.frames.max
             this.height = this.image.height
         }
-        this.dodge = dodge
-        this.range = range
-        this.hpregen = hpregen
         this.rotation = rotation
-        this.damage = damage
     }
     draw() {
         c.save()
@@ -364,148 +360,85 @@ class EnemyRanged extends EnemyMelee{
 }
 
 
-class WeaponMelee {
-    constructor({
-        position = player.position,
-        slot,
-        damage,
-        attackSpeed = 3000,
-        image,
-        isAttacking = false,
-        onCooldown = false
-    }){
-    this.position = position
-    this.slot = slot
-    this.damage = damage
-    this.attackSpeed = attackSpeed
-    this.image = new Image()
-    this.isAttacking = isAttacking
-    this.onCooldown = onCooldown
-    this.image.src = image.src
-    }
-    draw(){
-        c.drawImage(this.image, this.position.x, this.position.y);
-    }
-    getEnemyDist = (obj, i) => {
-        let enemyDistance = Math.sqrt(Math.pow((player.position.x - obj.position.x),2) + Math.pow((player.position.y - obj.position.y),2));
-        if(enemyDistance < (200 + player.range*0.5) && !this.onCooldown) {
-            this.attack(obj, i)
-        }
-    }
-    attack = (obj, i) => {
-            this.onCooldown = true;
-            this.isAttacking = true;
-            gsap.to(this.position, {
-                x: obj.position.x + obj.width/2,
-                y: obj.position.y + obj.height/2,
-                onComplete: () => {
-                     // Enemy gets hit
-                    obj.hp -= this.damage + player.meleeDmg
-                    if(!(player.hp.current + player.lifesteal > player.hp.max))
-                    player.hp.current += player.lifesteal
-                    checkHealth(obj, i)
-                    gsap.to(this.position, {
-                        x: player.position.x + 50* Math.cos(this.slot*(360/6)),
-                        y: player.position.y + 50 *Math.sin(this.slot*(360/6)),
-                        onComplete: async() => {
-                            this.isAttacking = false;
-                            await new Promise(r => setTimeout(r, this.attackSpeed));
-                            this.onCooldown = false;
-                        }
-                    })
-                }
-            })
-        }
-        
-        
-    }
 
     class Item {
         constructor({
             name,
+            attributes = {
+                damage: 0,
+                attackSpeed: 0,
+                meleeDmg: 0,
+                rangedDmg: 0,
+                Speed: 0,
+                hp: 0,
+                lifesteal: 0,
+                range: 0,
+                dodge: 0,
+                hpregen: 0,
+                armor: 0,
+            },
             image,
-            meleeDmg,
-            rangedDmg,
-            Speed,
-            hp,
-            lifesteal,
             type,
+            price,
+            position = {x:0,y:0},
+            isAttacking = false,
+            onCooldown = false
         }){
+        this.attributes = attributes
         this.name = name
-        this.image = image
-        this.meleeDmg = meleeDmg
-        this.rangedDmg = rangedDmg
-        this.Speed = Speed
-        this.hp = hp
-        this.lifesteal = lifesteal
-        this.type = type
-        }
-    }
-
-
-    class WeaponShop {
-        constructor({
-            name,
-            damage = 0,
-            attackSpeed = 0,
-            image,
-            meleeDmg = 0,
-            rangedDmg = 0,
-            Speed = 0,
-            hp = 0,
-            lifesteal = 0,
-            range = 0,
-            dodge = 0,
-            hpregen = 0,
-            armor = 0,
-            type,
-            price
-        }){
-        this.name = name
-        this.image = image
-        this.damage = damage
-        this.attackSpeed = attackSpeed
-        this.meleeDmg = meleeDmg
-        this.rangedDmg = rangedDmg
-        this.Speed = Speed
-        this.hp = hp
-        this.lifesteal = lifesteal
+        this.image = new Image()
+        this.image.src = image.src
         this.type = type
         this.price = price
-        this.range = range
-        this.dodge = dodge
-        this.hpregen = hpregen
-        this.armor = armor
+        this.position = position
+        this.isAttacking = isAttacking
+        this.onCooldown = onCooldown
         }
+        draw(){
+            c.drawImage(this.image, this.position.x, this.position.y);
+        }
+        getEnemyDist = (obj, i) => {
+            let enemyDistance = Math.sqrt(Math.pow((player.position.x - obj.position.x),2) + Math.pow((player.position.y - obj.position.y),2));
+            if(enemyDistance < (200 + player.range*0.5) && !this.onCooldown) {
+                this.attack(obj, i)
+            }
+        }
+        attack = (obj, i) => {
+                this.onCooldown = true;
+                this.isAttacking = true;
+                gsap.to(this.position, {
+                    x: obj.position.x + obj.width/2,
+                    y: obj.position.y + obj.height/2,
+                    onComplete: () => {
+                         // Enemy gets hit
+                        obj.hp -= this.damage + player.meleeDmg
+                        if(!(player.hp.current + player.lifesteal > player.hp.max))
+                        player.hp.current += player.lifesteal
+                        checkHealth(obj, i)
+                        gsap.to(this.position, {
+                            x: player.position.x + 50* Math.cos(this.slot*(360/6)),
+                            y: player.position.y + 50 *Math.sin(this.slot*(360/6)),
+                            onComplete: async() => {
+                                this.isAttacking = false;
+                                await new Promise(r => setTimeout(r, this.attackSpeed));
+                                this.onCooldown = false;
+                            }
+                        })
+                    }
+                })
+            }
         buyItem = () => {
             player.money -= this.price
-            if(this.type === "weapon") {
+            if(this.type === "weapon-melee" || this.type === "weapon-ranged") {
             if(ownedWeapons.length < 6){
-            ownedWeapons.push(new WeaponMelee ({
-                slot: ownedWeapons.length,
-                image: this.image,
-                damage: this.damage,
-                attackSpeed: this.attackSpeed,
-                meleeDmg: this.meleeDmg,
-                rangedDmg: this.rangedDmg,
-                Speed: this.Speed,
-                hp: this.hp,
-                lifesteal: this.lifesteal
-            }))
+            ownedWeapons.push(this)
             let img = document.createElement("img");
             img.src = this.image.src;
             img.className="inv-images"
             document.getElementById("weapons").appendChild(img)
         }
         } else {
-            inventory.push(new Item ({
-                image: this.image,
-                meleeDmg: this.meleeDmg,
-                rangedDmg: this.rangedDmg,
-                Speed: this.Speed,
-                hp: this.hp,
-                lifesteal: this.lifesteal
-            }))
+            inventory.push(self);
             let img = document.createElement("img");
             img.src = this.image.src;
             img.className="inv-images"
@@ -520,17 +453,17 @@ class WeaponMelee {
 
 
 
-
 const applyStats = (obj) => {
-    player.hp.max += obj.hp
-    for(let key in obj) {
-        if(key != "image" && key != "buyItem" && (obj[key] < 0 || obj[key] > 0) && key != "damage" && key != "attackSpeed" && key != "price" && key != "hp")
-        player[key] += obj[key]
+    if(obj.attributes.hp)
+        player.hp.max += obj.attributes.hp
+    for(let key in obj.attributes) {
+        if(key != "hp" && key != "attackSpeed" && obj.attributes[key])
+            player.attributes[key] += obj.attributes[key]
     }
-    if(player.armor > 30) {
-        player.armor = 30
+    if(player.attributes.armor > 30) {
+        player.attributes.armor = 30
     }
-    if(player.dodge > 60) {
-        player.dodge = 60 
+    if(player.attributes.dodge > 60) {
+        player.attributes.dodge = 60 
     }
 }

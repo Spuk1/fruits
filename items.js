@@ -1,57 +1,65 @@
 // Weapon
 
 
-const sword = new WeaponShop({
+const sword = new Item({
     name: "Sword",
     image: {src: "assets/sword.png"},
-    damage: 20,
-    meleeDmg: +2,
-    Speed: +3,
-    rangedDmg: -3,
-    attackSpeed: 3000,
-    type: "weapon",
-    price: 22
+    attributes: {
+        damage: 20,
+        meleeDmg: +2,
+        attackSpeed: 3000,
+        Speed: +3,
+        rangedDmg: -3,
+    },
+    type: "weapon-melee",
+    price: 22,
 })
 
-const dagger = new WeaponShop({
+const Spray = new Item({
     name: "Spray",
     image: {src: "assets/Insektenspray.png"},
-    damage: 20,
-    attackSpeed: 2000,
-    Speed: +3,
-    rangedDmg: -3,
-    lifesteal: +1,
-    type: "weapon",
-    price: 25
+    attributes: {
+        damage: 20,
+        attackSpeed: 2000,
+        Speed: +3,
+        rangedDmg: -3,
+        lifesteal: +1,
+    },
+    type: "weapon-ranged",
+    price: 25,
 })
 
-const Bulldozer = new WeaponShop({
+const Bulldozer = new Item({
     name: "Bulldozer",
     image: {src: "assets/locket_item.png"},
-    Speed: -3,
-    rangedDmg: -3,
-    hp:+5,
-    hpregen:2,
-    meleeDmg: +1,
+    attributes: {
+        Speed: -3,
+        rangedDmg: -3,
+        hp:+5,
+        hpregen:2,
+        meleeDmg: +1, 
+    },
     type: "item",
     price: 37
 })
 
-const SchwiftyBoots = new WeaponShop({
+const SchwiftyBoots = new Item({
     name: "Schwifty Boots",
     image:{src:"assets/boots.png"},
-    Speed: +6,
-    hp:-3,
-    meleeDmg:-1,
+    attributes: {
+        Speed: +6,
+        hp:-3,
+        meleeDmg:-1,
+    },
     type: "item",
     price: 55
 })
 
 
-const weapons = [sword,dagger]
+const weapons = [sword,Spray]
 const items = [Bulldozer,SchwiftyBoots]
 const inventory = []
-const chosen = [sword,dagger,Bulldozer]
+const chosen = [sword,Spray,Bulldozer]
 
 const ownedWeapons = [];
 
