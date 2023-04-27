@@ -3,7 +3,7 @@ const c = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 600;
 
-var roundTime = 2
+var roundTime = 10
 var currentWave = 1
 var rerollcount = 0
 var rerollPrice = 7
@@ -61,7 +61,18 @@ const player = new Sprite({
         left: playerImageLeft
     },
     money: 0,
-    attributes: {Speed: 24},
+    attributes: {
+        damage: 0,
+        attackSpeed: 0,
+        meleeDmg: 0,
+        rangedDmg: 0,
+        Speed: 24,
+        lifesteal: 0,
+        range: 0,
+        dodge: 0,
+        hpregen: 0,
+        armor: 0,
+    },
         hp: {
         max:20,
         current:20
@@ -146,10 +157,10 @@ var justStarted = true
 
 const attack = async() => {
     if(justStarted){
-    justStarted = false
+        justStarted = false
     await new Promise(r => setTimeout(r, 1000))
     
-}
+    }
     ownedWeapons.forEach((weapon,i) => {
         enemies.forEach(enemy => {
             weapon.getEnemyDist(enemy,i)
@@ -183,7 +194,8 @@ const death = () => {
 
 const checkHealth = (obj, i) => {
     if (obj.hp <= 0){
-        enemies.splice(i,1)
+        var index = enemies.find(element => element === obj)
+        enemies.splice(index,1)
         player.money += 5
     }
 }
@@ -194,7 +206,7 @@ sword.buyItem()
 
 let moving = true
 
-const animate = () => {
+const animate = async() => {
     window.requestAnimationFrame(animate);
     background.draw();
     player.draw();
@@ -269,7 +281,7 @@ const animate = () => {
    
     for(i=0;i<ownedWeapons.length;i++){
         ownedWeapons[i].draw()
-        if(ownedWeapons[i].isAttacking === false) {
+        if(ownedWeapons[i].isAttacking === false || ownedWeapons[i].type === "weapon-ranged") {
             ownedWeapons[i].position = {
                 x: player.position.x + 60 * Math.cos((i+1)*(360/6)),
                 y: player.position.y + 60 * Math.sin((i+1)*(360/6))
@@ -279,6 +291,7 @@ const animate = () => {
     //draw projectiles
     projectiles.forEach((sprite) => {
         sprite.draw()
+        if(sprite.frames.current === sprite.frames.max) sprite.animate = false;
     })
     player.recieveDmg()
     attack()

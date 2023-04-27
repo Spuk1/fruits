@@ -10,6 +10,7 @@ const sword = new Item({
         attackSpeed: 3000,
         Speed: +3,
         rangedDmg: -3,
+        range: 300
     },
     type: "weapon-melee",
     price: 22,
@@ -19,11 +20,12 @@ const Spray = new Item({
     name: "Spray",
     image: {src: "assets/Insektenspray.png"},
     attributes: {
-        damage: 20,
-        attackSpeed: 2000,
+        damage: 5,
+        attackSpeed: 1000,
         Speed: +3,
         rangedDmg: -3,
         lifesteal: +1,
+        range:1000
     },
     type: "weapon-ranged",
     price: 25,

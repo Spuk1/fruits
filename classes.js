@@ -18,7 +18,6 @@ class Sprite {
             meleeDmg: 0,
             rangedDmg: 0,
             Speed: 0,
-            hp: 0,
             lifesteal: 0,
             range: 0,
             dodge: 0,
@@ -372,7 +371,7 @@ class EnemyRanged extends EnemyMelee{
                 Speed: 0,
                 hp: 0,
                 lifesteal: 0,
-                range: 0,
+                range: 200,
                 dodge: 0,
                 hpregen: 0,
                 armor: 0,
@@ -399,11 +398,14 @@ class EnemyRanged extends EnemyMelee{
         }
         getEnemyDist = (obj, i) => {
             let enemyDistance = Math.sqrt(Math.pow((player.position.x - obj.position.x),2) + Math.pow((player.position.y - obj.position.y),2));
-            if(enemyDistance < (200 + player.range*0.5) && !this.onCooldown) {
-                this.attack(obj, i)
+            if(enemyDistance < this.attributes.range && !this.onCooldown) {
+                if(this.type === "weapon-melee")
+                    this.attack_melee(obj, i)
+                else if(this.type === "weapon-ranged")
+                    this.attack_ranged(obj, i)
             }
         }
-        attack = (obj, i) => {
+        attack_melee = (obj, i) => {
                 this.onCooldown = true;
                 this.isAttacking = true;
                 gsap.to(this.position, {
@@ -411,19 +413,52 @@ class EnemyRanged extends EnemyMelee{
                     y: obj.position.y + obj.height/2,
                     onComplete: () => {
                          // Enemy gets hit
-                        obj.hp -= this.damage + player.meleeDmg
-                        if(!(player.hp.current + player.lifesteal > player.hp.max))
-                        player.hp.current += player.lifesteal
+                        obj.hp -= this.attributes.damage + player.attributes.meleeDmg
+                        if(!(player.hp.current + player.attributes.lifesteal > player.hp.max))
+                        player.hp.current += player.attributes.lifesteal
                         checkHealth(obj, i)
                         gsap.to(this.position, {
-                            x: player.position.x + 50* Math.cos(this.slot*(360/6)),
-                            y: player.position.y + 50 *Math.sin(this.slot*(360/6)),
+                            x: player.position.x + 50* Math.cos((i+1)*(360/6)),
+                            y: player.position.y + 50 *Math.sin((i+1)*(360/6)),
                             onComplete: async() => {
                                 this.isAttacking = false;
-                                await new Promise(r => setTimeout(r, this.attackSpeed));
+                                await new Promise(r => setTimeout(r, this.attributes.attackSpeed));
                                 this.onCooldown = false;
                             }
                         })
+                    }
+                })
+            }
+            attack_ranged = (obj, i) => {
+                console.log("attack-ranged")
+                this.onCooldown = true;
+                this.isAttacking = true;
+                var projectile = new Sprite({
+                    position: {
+                        x: this.position.x,
+                        y: this.position.y
+                    },
+                    image:{src:"assets/Insektenspray_Munition.png"},
+                    animate:true,
+                    frames: {max:4}
+                }
+                )
+                projectiles.push(projectile)
+                var index = projectiles.find(element => element === projectile)
+                gsap.to(projectile.position, {
+                    x: obj.position.x + obj.width/2,
+                    y: obj.position.y + obj.height/2,
+                    onComplete: async() => {
+                         // Enemy gets hit
+                        projectiles.splice(index,1);
+                        obj.hp -= this.attributes.damage + player.attributes.meleeDmg
+                        if(!(player.hp.current + player.attributes.lifesteal > player.hp.max))
+                            player.hp.current += player.attributes.lifesteal;
+                        checkHealth(obj, i)
+                        this.isAttacking = false;
+                        
+                        await new Promise(r => setTimeout(r, this.attributes.attackSpeed));
+                        this.onCooldown = false;
                     }
                 })
             }
