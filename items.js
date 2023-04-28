@@ -23,8 +23,7 @@ const Spray = new Item({
         damage: 5,
         attackSpeed: 1000,
         Speed: +3,
-        rangedDmg: -3,
-        lifesteal: +1,
+        rangedDmg: +3,
         range:1000
     },
     type: "weapon-ranged",

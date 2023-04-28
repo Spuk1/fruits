@@ -81,8 +81,8 @@ class Sprite {
             let enemy = enemies[i]
             if(getCollision(this, enemy)) {
                 dmgCD = true
-                if(Math.random() * 100 >= this.dodge)
-                this.hp.current -= enemy.damage * (1+this.armor / 100)
+                if(Math.random() * 100 >= this.attributes.dodge)
+                this.hp.current -= enemy.damage * (1+this.attributes.armor / 100)
                 gsap.to(this, {
                     opacity: 0,
                     repeat: 5,
@@ -97,12 +97,12 @@ class Sprite {
                 break
         }
     }
-    for(let i=0; i<projectiles.length;i++) {
-        let projectile = projectiles[i]
+    for(let i=0; i<enemy_projectiles.length;i++) {
+        let projectile = enemy_projectiles[i]
         if(getCollision(this, projectile)) {
             dmgCD = true
             if(Math.random() * 100 >= this.dodge)
-            this.hp.current -= projectile.damage * (1+this.armor / 100)
+            this.hp.current -= projectile.attributes.damage * (1+this.armor / 100)
             gsap.to(this, {
                 opacity: 0,
                 repeat: 5,
@@ -322,7 +322,8 @@ class EnemyRanged extends EnemyMelee{
                 x: this.position.x,
                 y: this.position.y
             },
-            damage:4,
+            attributes:{
+            damage:4},
             image: {src: "images/fruitfly_shot.png"}
             }
         )
@@ -336,7 +337,7 @@ class EnemyRanged extends EnemyMelee{
             y: velocity.y/Distance
         }
 
-        projectiles.push(shot)
+        enemy_projectiles.push(shot)
         var index = projectiles.find(element => element === shot)
         let finished = false
         let angle = -(Math.atan(velocity.x/velocity.y)-Math.PI/2)
@@ -346,7 +347,7 @@ class EnemyRanged extends EnemyMelee{
             shot.position.x += velocity.x
             shot.position.y += velocity.y
             if(shot.position.x < 0 || shot.position.y < 0 || shot.position.x > canvas.width || shot.position.y > canvas.height){
-                projectiles.splice(index,1)
+                enemy_projectiles.splice(index,1)
                 finished = true
         }
             await new Promise(r => setTimeout(r, 1))
@@ -440,18 +441,25 @@ class EnemyRanged extends EnemyMelee{
                     },
                     image:{src:"assets/Insektenspray_Munition.png"},
                     animate:true,
-                    frames: {max:4}
+                    frames: {max:4, hold:4}
+                })
+                var velocity = {
+                    x: obj.position.x - this.position.x,
+                    y: obj.position.y - this.position.y
                 }
-                )
+                let angle = -(Math.atan(velocity.x/velocity.y)-Math.PI/2)
+                if(velocity.y<=0) angle = angle + Math.PI
+                projectile.rotation = angle
+                
                 projectiles.push(projectile)
                 var index = projectiles.find(element => element === projectile)
                 gsap.to(projectile.position, {
-                    x: obj.position.x + obj.width/2,
-                    y: obj.position.y + obj.height/2,
+                    x: obj.position.x,
+                    y: obj.position.y,
                     onComplete: async() => {
                          // Enemy gets hit
                         projectiles.splice(index,1);
-                        obj.hp -= this.attributes.damage + player.attributes.meleeDmg
+                        obj.hp -= this.attributes.damage + player.attributes.rangedDmg
                         if(!(player.hp.current + player.attributes.lifesteal > player.hp.max))
                             player.hp.current += player.attributes.lifesteal;
                         checkHealth(obj, i)

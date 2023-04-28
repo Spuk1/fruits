@@ -3,7 +3,7 @@ const c = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 600;
 
-var roundTime = 10
+var roundTime = 30
 var currentWave = 1
 var rerollcount = 0
 var rerollPrice = 7
@@ -193,6 +193,16 @@ const death = () => {
 }
 
 const checkHealth = (obj, i) => {
+    gsap.to(obj,{
+        opacity: 0.7,
+        duration:0.1,
+        onComplete:()=>{
+            gsap.to(obj,{
+                opacity:1,
+                duration:0.1
+            })
+        }
+    })
     if (obj.hp <= 0){
         var index = enemies.find(element => element === obj)
         enemies.splice(index,1)
@@ -202,7 +212,8 @@ const checkHealth = (obj, i) => {
 const moneyEle = document.createElement("h1")
 moneyEle.id = "money"
 
-sword.buyItem()
+Spray.buyItem()
+var enemy_projectiles = []
 
 let moving = true
 
@@ -291,7 +302,11 @@ const animate = async() => {
     //draw projectiles
     projectiles.forEach((sprite) => {
         sprite.draw()
-        if(sprite.frames.current === sprite.frames.max) sprite.animate = false;
+        if(sprite.frames.val === sprite.frames.max -1) sprite.animate = false;
+    })
+    enemy_projectiles.forEach((sprite) => {
+        sprite.draw()
+        if(sprite.frames.val === sprite.frames.max -1) sprite.animate = false;
     })
     player.recieveDmg()
     attack()

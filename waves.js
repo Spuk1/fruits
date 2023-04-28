@@ -81,8 +81,8 @@ const spawnEnemyWorm = (amount) => {
 }
 
 const lifeReg = () => {
-    if((player.hp.current + player.hpregen/5) < player.hp.max){
-        player.hp.current += player.hpregen /5
+    if((player.hp.current + player.attributes.hpregen/5) < player.hp.max){
+        player.hp.current += player.attributes.hpregen /5
     } else player.hp.current = player.hp.max
 }
 
