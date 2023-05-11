@@ -431,7 +431,6 @@ class EnemyRanged extends EnemyMelee{
                 })
             }
             attack_ranged = (obj, i) => {
-                console.log("attack-ranged")
                 this.onCooldown = true;
                 this.isAttacking = true;
                 var projectile = new Sprite({
