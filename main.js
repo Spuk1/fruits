@@ -30,18 +30,49 @@ embyImageFront.src = "./images/enemies/EmbyFront.png";
 const embyImageSprite = new Image();
 embyImageSprite.src = "./images/enemies/EmbySprite.png";
 
-const background = new Sprite({
+const arenas = [new Sprite({
     position: {
-        x:-canvas.width /3,
-        y: -canvas.height
+        x:0,//-canvas.width /3,
+        y: 0//-canvas.height
     },
     image: {
-        src: "./images/map.png"
+        src: "./images/map_castle.jpg"
     }
-})
+}),new Sprite({
+    position: {
+        x:0,//-canvas.width /3,
+        y: 0//-canvas.height
+    },
+    image: {
+        src: "./images/elven_land_map.jpg"
+    }
+}),
+new Sprite({
+    position: {
+        x:0,//-canvas.width /3,
+        y: 0//-canvas.height
+    },
+    image: {
+        src: "./images/map_skylands.png"
+    }
+}),
+new Sprite({
+    position: {
+        x:0,//-canvas.width /3,
+        y: 0//-canvas.height
+    },
+    image: {
+        src: "./images/map_desert.png"
+    }
+})]
+
 
 // create player
 const player = new Sprite({
+    velocity: {
+        x:0,
+        y:0
+    },
     position: {
         x:canvas.width /2 -50,
         y:canvas.height /2
@@ -216,6 +247,7 @@ Spray.buyItem()
 var enemy_projectiles = []
 
 let moving = true
+let background = arenas[Math.floor(Math.random()*arenas.length)]
 
 const animate = async() => {
     window.requestAnimationFrame(animate);
@@ -224,64 +256,32 @@ const animate = async() => {
     moneyEle.innerHTML = player.money
 
     if(moving) {
-        if (keys.w.pressed && !keys.a.pressed && !keys.d.pressed) {
-            player.position.y -= player.attributes.Speed/8;
-            player.image = player.sprites.up;
+
+        if(keys.w.pressed && !(player.position.y < canvas.height/3)) player.velocity.y = -1
+        else if(keys.s.pressed && !(player.position.y > canvas.height -90)) player.velocity.y = 1;
+        else player.velocity.y = 0;
+        if(keys.a.pressed && !(player.position.x <= 0)) player.velocity.x = -1;
+        else if(keys.d.pressed && !(player.position.x >= canvas.width - player.width)) player.velocity.x = 1;
+        else player.velocity.x = 0
+        let velocity_normalized = Math.sqrt(Math.pow(player.velocity.x,2) + Math.pow(player.velocity.y, 2))
+        if(player.velocity.x != 0 || player.velocity.y != 0){
             player.animate = true;
-            
+            player.position.x += player.velocity.x / velocity_normalized * player.attributes.Speed / 8;
+            player.position.y += player.velocity.y / velocity_normalized * player.attributes.Speed / 8;
         }
+        else player.animate = false;
         
-    
-        else if (keys.s.pressed && !keys.a.pressed && !keys.d.pressed) {
-            player.position.y += player.attributes.Speed/8;
+        if(player.velocity.x < 0){
             player.image = player.sprites.left;
-            player.animate = true;
         }
-    
-        else if (keys.a.pressed && !keys.w.pressed && !keys.s.pressed) {
-            player.position.x -= player.attributes.Speed /8;
-            player.image = player.sprites.left;
-            player.animate = true;
-        }
-    
-        else if (keys.d.pressed && !keys.w.pressed && !keys.s.pressed) {
-            player.position.x += player.attributes.Speed /8;
+        else if(player.velocity.x > 0) {
             player.image = player.sprites.right;
-            player.animate = true;
         }
-        else if (keys.d.pressed && keys.w.pressed) {
-                player.position.y -= player.attributes.Speed /12;
-                player.position.x += player.attributes.Speed /12;
-                player.image = player.sprites.right;
-                player.animate = true;
-    
+        else if(player.velocity.y < 0) {
+            player.image = player.sprites.up;
         }
-        else if (keys.a.pressed && keys.w.pressed) {
-            player.position.y -= player.attributes.Speed /12;
-            player.position.x -= player.attributes.Speed /12;
-            player.image = player.sprites.left;
-            player.animate = true;
-    
-        }
-        else if (keys.d.pressed && keys.s.pressed) {
-        player.position.y += player.attributes.Speed /12;
-        player.position.x += player.attributes.Speed /12;
-        player.image = player.sprites.right;
-        player.animate = true;
-    
-        }   
-        else if (keys.a.pressed && keys.s.pressed) {
-            player.position.y += player.attributes.Speed /12;
-            player.position.x -= player.attributes.Speed /12;
-            player.image = player.sprites.left;
-            player.animate = true;
-    
-        }
-        else  {player.animate = false;}
+
     }
-    
-
-
     //draw Enemies
     for(let i=0;i<enemies.length;i++){
         enemies[i].draw();

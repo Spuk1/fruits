@@ -5,6 +5,7 @@ var projectiles = []
 class Sprite {
     constructor({
         id,
+        velocity = {x:0,y:0},
         position,
         image,
         frames= {max: 1, hold: 10},
@@ -26,6 +27,7 @@ class Sprite {
         },
         rotation = 0,
     }){
+        this.velocity = velocity
         this.id = id
         this.position = position
         this.image = image
@@ -284,7 +286,7 @@ class EnemyRanged extends EnemyMelee{
     }
     run_random = async() =>{
         this.move = false
-        if(this.coolDown === 3){
+        if(this.coolDown >= 2){
             this.state = 1
         }
         var velocity = {

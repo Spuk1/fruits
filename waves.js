@@ -7,7 +7,7 @@ const spawnEnemyEmby = (amount) => {
                 id: i,
                 position:{
                     x: Math.floor(Math.random()* canvas.width),
-                    y: Math.floor(Math.random()* canvas.height)
+                    y: canvas.height/3 + Math.floor(Math.random()* canvas.height-canvas.height/3)
                 },
                 sprites: {
                     up:embyImageSprite,
@@ -35,7 +35,7 @@ const spawnEnemyFruitFly = (amount) => {
                 id: i,
                 position:{
                     x: Math.floor(Math.random()* canvas.width),
-                    y: Math.floor(Math.random()* canvas.height)
+                    y: Math.floor(Math.random()* canvas.height-canvas.height/3) + (canvas.height/3)
                 },
                 sprites: {
                     left:"./images/enemies/Fruchtfliege_Left.png",
@@ -60,7 +60,7 @@ const spawnEnemyWorm = (amount) => {
                 id: i,
                 position:{
                     x: Math.floor(Math.random()* (canvas.width-50)),
-                    y: Math.floor(Math.random()* (canvas.height-50))
+                    y: Math.floor(Math.random()* canvas.height/3*2) + (canvas.height/3)
                 },
                 sprites: {
                     left:"images/wurm links.png",
