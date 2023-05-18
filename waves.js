@@ -48,7 +48,8 @@ const spawnEnemyFruitFly = (amount) => {
                     max:4,
                     hold:8
                 },
-                animate: true
+                animate: true,
+                onCoolDown: Math.floor(Math.random()* 3) -1
             })
         )
     }
@@ -74,7 +75,6 @@ const spawnEnemyWorm = (amount) => {
                     hold:8
                 },
                 animate: true,
-                onCoolDown: Math.floor(Math.random()*-3)
             })
         )
     }

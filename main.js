@@ -4,7 +4,7 @@ canvas.width = 1024;
 canvas.height = 600;
 
 var roundTime = 30
-var currentWave = 1
+var currentWave = 2
 var rerollcount = 0
 var rerollPrice = 7
 

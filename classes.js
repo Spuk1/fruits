@@ -309,7 +309,7 @@ class EnemyRanged extends EnemyMelee{
             if(velocity.x < 0) this.image.src = this.sprites.left
             else this.image.src = this.sprites.right
             counter += 1
-            if(counter === 150) running = false
+            if(counter === 100) running = false
             await new Promise(r => setTimeout(r, 5))
         }
         await new Promise(r => setTimeout(r, 200))
