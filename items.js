@@ -1,9 +1,22 @@
 // Weapon
 
 
-const sword = new Item({
-    name: "Sword",
-    image: {src: "assets/sword.png"},
+const fruitpick = new Item({
+    name: "Fruitpick",
+    image: {src: "assets/fruitpick.png"},
+    attributes: {
+        damage: 10,
+        attackSpeed: 500,
+        lifesteal:1,
+        range: 200
+    },
+    type: "weapon-melee",
+    price: 22,
+})
+
+const flyswatter = new Item({
+    name: "Fly swatter",
+    image: {src: "assets/flyswatter.png"},
     attributes: {
         damage: 20,
         meleeDmg: +2,
@@ -13,7 +26,7 @@ const sword = new Item({
         range: 300
     },
     type: "weapon-melee",
-    price: 22,
+    price: 28,
 })
 
 const Spray = new Item({
@@ -27,7 +40,7 @@ const Spray = new Item({
         range:1000
     },
     type: "weapon-ranged",
-    price: 25,
+    price: 30,
 })
 
 const Bulldozer = new Item({
@@ -115,10 +128,10 @@ const Book = new Item({
 
 
 
-const weapons = [sword,Spray]
+const weapons = [flyswatter,Spray, fruitpick]
 const items = [Bulldozer,SchwiftyBoots, Candle, Sunglasses, Bottle, Helmet]
 const inventory = []
-const chosen = [sword,Spray,Bulldozer]
+const chosen = []
 
 const ownedWeapons = [];
 

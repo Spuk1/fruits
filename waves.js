@@ -1,5 +1,8 @@
 const enemies = []
 let time
+let bossfight = false
+
+
 const spawnEnemyEmby = (amount) => {
     for(i = 0; i<amount;i++) {
         enemies.push(
@@ -80,6 +83,35 @@ const spawnEnemyWorm = (amount) => {
     }
 }
 
+const spawnBoss = (amount) => {
+    for(i = 0; i<amount;i++) {
+        enemies.push(
+            new Boss({
+                position:{
+                    x: canvas.width/2,
+                    y: 100
+                },
+                sprites: {
+                    left:"images/hand_left.png",
+                    right:"images/hand_right.png"
+                },
+                image: {
+                    src: "images/hand_left.png"
+                },
+                frames: {
+                    max:4,
+                    hold:8
+                },
+                animate: false,
+                attributes: {
+                    hp: 100
+                },
+                movable: false
+            })
+        )
+    }
+}
+
 const lifeReg = () => {
     if((player.hp.current + player.attributes.hpregen/5) < player.hp.max){
         player.hp.current += player.attributes.hpregen /5
@@ -141,6 +173,22 @@ const wave = async(diff) => {
                     spawnEnemyWorm(2*diff)
                 };
                 break
+            case 5:
+                if(enemies.length === 0 && time === 0 ){
+                bossfight = true;
+                spawnBoss(1);
+                gsap.to(canvas, {
+                    opacity: 0.5,
+                    yoyo: true,
+                    repeat: 3
+                })}
+                if(time === 2) {
+                    bossfight = false
+                    enemies[0].movable = true
+                    enemies[0].animate = true
+                }
+                break
+
         }
         document.getElementById("timer").innerHTML = roundTime -time;
         lifeReg()

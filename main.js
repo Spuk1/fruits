@@ -4,7 +4,7 @@ canvas.width = 1024;
 canvas.height = 600;
 
 var roundTime = 20
-var currentWave = 1
+var currentWave = 5
 var rerollcount = 0
 var rerollPrice = 7
 
@@ -299,6 +299,8 @@ const animate = async() => {
             }
         }
     }
+   
+    
     //draw projectiles
     projectiles.forEach((sprite) => {
         sprite.draw()
@@ -309,7 +311,13 @@ const animate = async() => {
         if(sprite.frames.val === sprite.frames.max -1) sprite.animate = false;
     })
     player.recieveDmg()
-    attack()
+    if(!bossfight){
+    moving = true;
+    attack();
+}else {
+    moving = false
+    
+}
 }
 wave(1)
 animate()
