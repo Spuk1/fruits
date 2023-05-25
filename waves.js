@@ -49,7 +49,7 @@ const spawnEnemyFruitFly = (amount) => {
                     hold:8
                 },
                 animate: true,
-                onCoolDown: Math.floor(Math.random()* 3) -1
+                onCoolDown: Math.floor(Math.random()* 3) -1,
             })
         )
     }
@@ -131,10 +131,14 @@ const wave = async(diff) => {
                 break
             case 4:
                 if (time === 0) {
-                    spawnEnemyEmby(4*diff)
+                    spawnEnemyEmby(1*diff)
+                    spawnEnemyFruitFly(2*diff)
+                    spawnEnemyWorm(2*diff)
                     }
                 else if (time %7 === 0) {
-                    spawnEnemyEmby(4*diff)
+                    spawnEnemyEmby(1*diff)
+                    spawnEnemyFruitFly(2*diff)
+                    spawnEnemyWorm(2*diff)
                 };
                 break
         }

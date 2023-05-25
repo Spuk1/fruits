@@ -36,9 +36,9 @@ const Bulldozer = new Item({
     attributes: {
         Speed: -3,
         rangedDmg: -3,
-        hp:+5,
-        hpregen:2,
-        meleeDmg: +1, 
+        hp:+10,
+        hpregen:5,
+        meleeDmg: -3, 
     },
     type: "item",
     price: 37
@@ -51,14 +51,72 @@ const SchwiftyBoots = new Item({
         Speed: +6,
         hp:-3,
         meleeDmg:-1,
+        dodge: +10
     },
     type: "item",
-    price: 55
+    price: 38
+})
+
+const Helmet = new Item({
+    name: "Helmet",
+    image:{src:"assets/Insektenschutz.png"},
+    attributes: {
+        hp:+5,
+        armor: +5
+    },
+    type: "item",
+    price: 15
+})
+
+const Sunglasses = new Item({
+    name: "Sunglasses",
+    image:{src:"assets/sunglasses.png"},
+    attributes: {
+        rangedDmg: +2,
+        meleeDmg: +2,
+        armor: -2
+    },
+    type: "item",
+    price: 20
+})
+
+const Bottle = new Item({
+    name: "Waterbottle",
+    image:{src:"assets/Wasserflasche.png"},
+    attributes: {
+        hpregen: +3,
+        rangedDmg: -1
+    },
+    type: "item",
+    price: 25
+})
+
+const Candle = new Item({
+    name: "Candle",
+    image:{src:"assets/Kerze.png"},
+    attributes: {
+        rangedDmg: +5,
+        hpregen: -2
+    },
+    type: "item",
+    price: 20
+})
+
+const Book = new Item({
+    name: "The art of fencing flies",
+    image:{src:"assets/sunglasses.png"},
+    attributes: {
+        meleeDmg: +8,
+        dodge: -15
+    },
+    type: "item",
+    price: 30
 })
 
 
+
 const weapons = [sword,Spray]
-const items = [Bulldozer,SchwiftyBoots]
+const items = [Bulldozer,SchwiftyBoots, Candle, Sunglasses, Bottle, Helmet]
 const inventory = []
 const chosen = [sword,Spray,Bulldozer]
 

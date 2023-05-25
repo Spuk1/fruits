@@ -103,8 +103,10 @@ class Sprite {
         let projectile = enemy_projectiles[i]
         if(getCollision(this, projectile)) {
             dmgCD = true
-            if(Math.random() * 100 >= this.dodge)
-            this.hp.current -= projectile.attributes.damage * (1+this.armor / 100)
+            if(Math.random() * 100 >= this.attributes.dodge){
+                this.hp.current -= projectile.attributes.damage * (1+this.attributes.armor / 100);
+                
+            }
             gsap.to(this, {
                 opacity: 0,
                 repeat: 5,
@@ -271,6 +273,7 @@ class EnemyRanged extends EnemyMelee{
     this.coolDown = onCooldown
     this.move = true
     this.isAttacking = isAttacking
+    this.damage = damage
 }
     enemyAI = () =>{
         switch (this.state){
@@ -325,7 +328,7 @@ class EnemyRanged extends EnemyMelee{
                 y: this.position.y
             },
             attributes:{
-            damage:4},
+            damage:this.damage},
             image: {src: "images/fruitfly_shot.png"}
             }
         )

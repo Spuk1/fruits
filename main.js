@@ -3,8 +3,8 @@ const c = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 600;
 
-var roundTime = 30
-var currentWave = 2
+var roundTime = 20
+var currentWave = 1
 var rerollcount = 0
 var rerollPrice = 7
 
