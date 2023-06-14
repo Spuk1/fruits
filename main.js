@@ -110,28 +110,6 @@ const player = new Sprite({
     },
 })
 
-//Collision detection
-
-const getCollisionX = (obj1, obj2) => {
-    return (obj1.position.x + obj1.width >= obj2.position.x &&
-        obj1.position.x <= obj2.position.x + obj2.width)
-}
-
-
-const getCollisionY = (obj1, obj2) => {
-    return (obj1.position.y <= obj2.position.y + obj2.height/2 &&
-        obj1.position.y + obj1.height/2 >= obj2.position.y)
-}
-
-
-const getCollision =(rectangle1, rectangle2) => {
-    return (
-            rectangle1.position.x + rectangle1.width/1.6 >= rectangle2.position.x &&
-            rectangle1.position.x <= rectangle2.position.x + rectangle2.width/1.6 &&
-            rectangle1.position.y <= rectangle2.position.y + rectangle2.height/1.6 &&
-            rectangle1.position.y + rectangle1.height/1.6 >= rectangle2.position.y
-            )
-}
 
 
 //Add Event listener Movement
@@ -188,8 +166,9 @@ var justStarted = true
 
 const attack = async() => {
     if(justStarted){
+        await new Promise(r => setTimeout(r, 1000))
         justStarted = false
-    await new Promise(r => setTimeout(r, 1000))
+    
     
     }
     ownedWeapons.forEach((weapon,i) => {
@@ -243,8 +222,17 @@ const checkHealth = (obj, i) => {
 const moneyEle = document.createElement("h1")
 moneyEle.id = "money"
 
-Spray.buyItem()
+Slingshot.buyItem()
 var enemy_projectiles = []
+
+let castShadow = false;
+let shadow = new Sprite({
+    image:{src: "images/shadow.png"},
+    opacity:0.7,
+    position: {
+        x : player.position.x,
+        y : player.position.y},
+})
 
 let moving = true
 let background = arenas[Math.floor(Math.random()*arenas.length)]
@@ -252,6 +240,12 @@ let background = arenas[Math.floor(Math.random()*arenas.length)]
 const animate = async() => {
     window.requestAnimationFrame(animate);
     background.draw();
+    if(currentWave === 5) {
+        document.getElementById("Boss_Health").style.width = enemies[0].hp/1000*100 + "%";
+        if(castShadow){
+            shadow.draw()
+        }
+    }
     player.draw();
     moneyEle.innerHTML = player.money
 
@@ -313,11 +307,13 @@ const animate = async() => {
     player.recieveDmg()
     if(!bossfight){
     moving = true;
-    attack();
+    if(!bossInAir)
+        attack();
 }else {
     moving = false
     
 }
+
 }
 wave(1)
 animate()

@@ -88,7 +88,7 @@ const spawnBoss = (amount) => {
         enemies.push(
             new Boss({
                 position:{
-                    x: canvas.width/2,
+                    x: canvas.width/2 -100,
                     y: 100
                 },
                 sprites: {
@@ -103,9 +103,7 @@ const spawnBoss = (amount) => {
                     hold:8
                 },
                 animate: false,
-                attributes: {
-                    hp: 100
-                },
+                hp: 1000,
                 movable: false
             })
         )
@@ -138,43 +136,31 @@ const wave = async(diff) => {
     while(time <= roundTime && !isDead) {
         switch (currentWave){
             case 1: 
-                if (time === 0) {
-                    spawnEnemyWorm(2*diff)
-                }
-                else if (time %7 === 0) {
+                if (time %7 === 0 || enemies.length === 0) {
                     spawnEnemyWorm(2*diff)
                 };
                 break
             case 2:
-                if (time === 0) {
-                    spawnEnemyFruitFly(2*diff)
-                }
-                else if (time %7 === 0) {
+                if (time %7 === 0 || enemies.length === 0) {
                     spawnEnemyFruitFly(2*diff)
                 };
                 break
             case 3:
-                if (time === 0) {
-                    spawnEnemyEmby(3*diff)
-                }
-                else if (time %7 === 0) {
+                if (time %7 === 0 || enemies.length === 0) {
                     spawnEnemyEmby(3*diff)
                 };
                 break
             case 4:
-                if (time === 0) {
-                    spawnEnemyEmby(1*diff)
-                    spawnEnemyFruitFly(2*diff)
-                    spawnEnemyWorm(2*diff)
-                    }
-                else if (time %7 === 0) {
+                if (time %7 === 0 || enemies.length === 0) {
                     spawnEnemyEmby(1*diff)
                     spawnEnemyFruitFly(2*diff)
                     spawnEnemyWorm(2*diff)
                 };
                 break
             case 5:
+                roundTime = 1000
                 if(enemies.length === 0 && time === 0 ){
+                document.getElementById("Boss_Healthbar").style.display = "block"
                 bossfight = true;
                 spawnBoss(1);
                 gsap.to(canvas, {
@@ -186,6 +172,12 @@ const wave = async(diff) => {
                     bossfight = false
                     enemies[0].movable = true
                     enemies[0].animate = true
+                    
+                }
+                if(enemies[0].hp < 500 && time % 5 === 0) {
+                    spawnEnemyEmby(1*diff)
+                    spawnEnemyFruitFly(1*diff)
+                    spawnEnemyWorm(1*diff)
                 }
                 break
 

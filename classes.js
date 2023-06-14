@@ -2,6 +2,29 @@ let dmgCD = false
 var projectiles = []
 
 
+//Collision detection
+
+const getCollisionX = (obj1, obj2) => {
+    return (obj1.position.x + obj1.width >= obj2.position.x &&
+        obj1.position.x <= obj2.position.x + obj2.width)
+}
+
+
+const getCollisionY = (obj1, obj2) => {
+    return (obj1.position.y <= obj2.position.y + obj2.height/2 &&
+        obj1.position.y + obj1.height/2 >= obj2.position.y)
+}
+
+
+const getCollision =(rectangle1, rectangle2) => {
+    return (
+            rectangle1.position.x + rectangle1.width/1.6 >= rectangle2.position.x &&
+            rectangle1.position.x <= rectangle2.position.x + rectangle2.width/1.6 &&
+            rectangle1.position.y <= rectangle2.position.y + rectangle2.height/1.6 &&
+            rectangle1.position.y + rectangle1.height/1.6 >= rectangle2.position.y
+            )
+}
+
 class Sprite {
     constructor({
         id,
@@ -45,6 +68,8 @@ class Sprite {
             this.height = this.image.height
         }
         this.rotation = rotation
+        this.index
+        this.finished
     }
     draw() {
         c.save()
@@ -370,9 +395,9 @@ class EnemyRanged extends EnemyMelee {
 }
 
 
+let bossInAir = false;
 
-
-class Boss extends EnemyMelee {
+class Boss extends Sprite {
     constructor({
         position,
         name,
@@ -380,9 +405,10 @@ class Boss extends EnemyMelee {
         frames = { max: 1, hold: 10 },
         animate = false,
         sprites,
-        hp = 20,
+        hp = 1000,
         Speed = 0,
-        damage = 5,
+        damage = 10,
+        rangedDmg = 5,
         movable
     }) {
         super({
@@ -394,81 +420,147 @@ class Boss extends EnemyMelee {
         this.onCooldown = false
         this.movable = movable
         this.name = name
+        this.attack_state = 0
+        this.state = 0
+        this.rangedDmg = rangedDmg
+        this.count = 0
+        this.amount = 0
+        this.attack = 0
     }
-    enemyAI = () => {
-        this.run()
-    }
-    run = async () => {
-        await new Promise(r => setTimeout(r, 100))
-        this.movable = true
-        if (this.position.x + this.width / 2 <= player.position.x) {
-            this.image.src = this.sprites.right
-            for (let i = 0; i < enemies.length; i++) {
-                let e = enemies[i]
-                if (e === this) continue
-                this.movable = true
-                if (getCollisionX(this, e)) {
-                    this.movable = false
-                    this.position.x, e.position.x += this.Speed * 0.8
-                    break
-                    //console.log("should be false"
+    enemyAI = async() => {
+        console.log(this.isAttacking, this.state)
+        switch(this.state){
+            case 0:
+                await new Promise(r => setTimeout(r, 3000))
+                this.state = 1
+            case 1:
+                if(!this.isAttacking) this.attack_Slam()
+                this.amount = 0
+            case 2:
+                    this.count = 0
+                    if(!this.isAttacking){
+                        this.ranged_Attack()
+                        this.amount++
+                    }
+                    else this.state = 3
+            case 3:
+                    this.count++
+                    if(this.count > 300)
+                    if(this.amount <5) this.state = 2
+                    else this.state = 1
                 }
-            }
-            if (this.movable) this.position.x += this.Speed
+                    
         }
-        else if (this.position.x >= player.position.x + player.width / 2) {
-            this.image.src = this.sprites.left
-            for (let i = 0; i < enemies.length; i++) {
-                let e = enemies[i]
-                if (e === this) continue
-                this.movable = true
-                if (getCollisionX(this, e)) {
-                    this.movable = false
-                    this.position.x, e.position.x -= this.Speed * 0.8
-                    //console.log("should be false")
-                    break
+    attack_Slam = async() => {
+        this.isAttacking = true
+        switch (this.attack_state){
+            case 0:
+                this.animate  = false
+                gsap.to(this.position, {
+                    y: -100,
+                    duration: 1,
+                })
+                await new Promise(r => setTimeout(r, 2000))
+                this.attack_state = 1
+               
+            case 1:
+                bossInAir = true
+                if(!castShadow){
+                    shadow.position.x = player.position.x - 50
+                    shadow.position.y = player.position.y - 50
                 }
-            }
-            if (this.movable) this.position.x -= this.Speed
-        }
-        if (this.position.y >= player.position.y + player.height / 2) {
-            for (let i = 0; i < enemies.length; i++) {
-                const e = enemies[i]
-                if (e === this) continue
-                this.movable = true
-                if (getCollisionY(this, e)) {
-                    this.movable = false
-                    this.position.y, e.position.y -= this.Speed * 0.8
-                    //console.log("should be false")
-                    break
+                
+                castShadow = true;
+                if(castShadow){
+                    await new Promise(r => setTimeout(r, 1000))
+                    this.attack_state = 2
                 }
-            }
-            if (this.movable) this.position.y -= this.Speed * 0.8
-        }
-        else if (this.position.y + this.height / 2 <= player.position.y) {
-            for (let i = 0; i < enemies.length; i++) {
-                const e = enemies[i]
-                if (e === this) continue
-                this.movable = true
-                if (getCollisionY(this, e)) {
-                    this.movable = false
-                    this.position.y, e.position.y += this.Speed * 0.8
-                    //console.log("should be false")
-                    break
+                
+            case 2:
+                    gsap.to(this.position, {
+                        x: shadow.position.x,
+                        y: shadow.position.y +100,
+                        duration: 1
+                    })
+                    await new Promise(r => setTimeout(r, 1000))
+                    this.attack_state = 3
+                    castShadow = false
+            case 3:
+                    gsap.to(this.position, {
+                    x: canvas.width/2 - 100,
+                    y: 100,
+                    duration: 1
+                })
+                bossInAir = false
+                await new Promise(r => setTimeout(r, 1000))
+                this.isAttacking = false
+                this.attack_state = 0
+                this.animate = true
+                this.state = 2
+                
                 }
-            }
-            if (this.movable) this.position.y += this.Speed
-        }
+            
 
+        }
+        ranged_Attack =  async() => {
+            this.isAttacking = true
+            //Attack logic here
+            var shots = []
+            if (this.attack === 0){
+                this.attack = 1
+                for(let i = 0; i <= 8; i++) {
+                shots.push(new Sprite({
+                position: {
+                    x: this.position.x,
+                    y: this.position.y
+                },
+                attributes: {
+                    damage: this.rangedDmg
+                },
+                image: { src: "images/fruitfly_shot.png" },
+                velocity: {
+                    x: Math.random()*2-1,
+                    y: Math.random()
+                }
+            })
+            )
+        }
+            }
+               
+            shots.forEach(shot => {
+                var Distance = Math.sqrt(Math.pow(shot.velocity.x, 2) + Math.pow(shot.velocity.y, 2))
+                shot.velocity.x = shot.velocity.x / Distance
+                shot.velocity.y = shot.velocity.y / Distance
+                enemy_projectiles.push(shot)
+                this.index = projectiles.find(element => element === shot)
+                shot.rotation = -(Math.atan(shot.velocity.x / shot.velocity.y) - Math.PI / 2) + Math.PI
+            });
 
-    }
+            
+            while (this.isAttacking) {
+                shots.forEach((shot,i) =>{
+                shot.position.x += shot.velocity.x
+                shot.position.y += shot.velocity.y
+                if (shot.position.x < 0 || shot.position.y < 0 || shot.position.x > canvas.width || shot.position.y > canvas.height) {
+                    enemy_projectiles = []
+                    this.isAttacking = false
+                    this.attack = 0
+                }
+                
+                })
+                await new Promise(r => setTimeout(r, 1))
+            }
+            
+            
+        }
 }
-
 
 
 class Item {
     constructor({
         name,
+        projectile,
+        frames = {max:1, hold:8},
         attributes = {
             damage: 0,
             attackSpeed: 0,
@@ -489,6 +581,8 @@ class Item {
         isAttacking = false,
         onCooldown = false
     }) {
+        this.frames = frames
+        this.projectile = projectile
         this.attributes = attributes
         this.name = name
         this.image = new Image()
@@ -543,9 +637,9 @@ class Item {
                 x: this.position.x,
                 y: this.position.y
             },
-            image: { src: "assets/Insektenspray_Munition.png" },
+            image: { src: this.projectile },
             animate: true,
-            frames: { max: 4, hold: 4 }
+            frames: { max: this.frames.max, hold: this.frames.hold }
         })
         var velocity = {
             x: obj.position.x - this.position.x,
@@ -604,7 +698,7 @@ const applyStats = (obj) => {
     if (obj.attributes.hp)
         player.hp.max += obj.attributes.hp
     for (let key in obj.attributes) {
-        if (key != "hp" && key != "attackSpeed" && obj.attributes[key])
+        if (key != "hp" && key != "attackSpeed" && obj.attributes[key] && key != "range")
             player.attributes[key] += obj.attributes[key]
     }
     if (player.attributes.armor > 30) {

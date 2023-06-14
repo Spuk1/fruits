@@ -32,11 +32,29 @@ const flyswatter = new Item({
 const Spray = new Item({
     name: "Spray",
     image: {src: "assets/Insektenspray.png"},
+    projectile: "assets/Insektenspray_Munition.png",
+    frames:{max:4},
     attributes: {
         damage: 5,
         attackSpeed: 1000,
         Speed: +3,
+        rangedDmg: +1,
+        range:1000
+    },
+    type: "weapon-ranged",
+    price: 30,
+})
+
+const Slingshot = new Item({
+    name: "Slingshot",
+    image: {src: "assets/Slingshot.png"},
+    projectile: "assets/stone.png",
+    frames: {max:1},
+    attributes: {
+        damage: 8,
+        attackSpeed: 2000,
         rangedDmg: +3,
+        hp:3,
         range:1000
     },
     type: "weapon-ranged",
@@ -128,8 +146,8 @@ const Book = new Item({
 
 
 
-const weapons = [flyswatter,Spray, fruitpick]
-const items = [Bulldozer,SchwiftyBoots, Candle, Sunglasses, Bottle, Helmet]
+const weapons = [flyswatter,Spray, fruitpick,Slingshot]
+const items = [Bulldozer,SchwiftyBoots, Candle, Sunglasses, Bottle, Helmet,Book]
 const inventory = []
 const chosen = []
 
