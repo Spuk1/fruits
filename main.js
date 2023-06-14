@@ -4,7 +4,7 @@ canvas.width = 1024;
 canvas.height = 600;
 
 var roundTime = 20
-var currentWave = 5
+var currentWave = 1
 var rerollcount = 0
 var rerollPrice = 7
 
@@ -171,11 +171,18 @@ const attack = async() => {
     
     
     }
+    enemies.forEach(enemy => {
+        ownedWeapons.forEach((weapon, i) => {
+            weapon.getEnemyDist(enemy, i)
+        })
+    })
+
+    /*
     ownedWeapons.forEach((weapon,i) => {
         enemies.forEach(enemy => {
             weapon.getEnemyDist(enemy,i)
     })
-});
+});*/
 }
 
 var isDead = false
@@ -216,13 +223,12 @@ const checkHealth = (obj, i) => {
     if (obj.hp <= 0){
         var index = enemies.find(element => element === obj)
         enemies.splice(index,1)
-        player.money += 5
+        player.money += 10
     }
 }
 const moneyEle = document.createElement("h1")
 moneyEle.id = "money"
 
-Slingshot.buyItem()
 var enemy_projectiles = []
 
 let castShadow = false;
@@ -236,6 +242,9 @@ let shadow = new Sprite({
 
 let moving = true
 let background = arenas[Math.floor(Math.random()*arenas.length)]
+
+var background_audio = new Audio("audio/X2Download.app - Power Punch by 2050 - Powerful (320 kbps).mp3")
+background_audio.volume = 0.2
 
 const animate = async() => {
     window.requestAnimationFrame(animate);
@@ -315,5 +324,5 @@ const animate = async() => {
 }
 
 }
-wave(1)
+get_starter_Item()
 animate()

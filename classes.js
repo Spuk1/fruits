@@ -106,7 +106,9 @@ class Sprite {
         if (!dmgCD) {
             for (let i = 0; i < enemies.length; i++) {
                 let enemy = enemies[i]
-                if (getCollision(this, enemy)) {
+                if (getCollision(this, enemy) && !(enemy === enemies[0] && bossInAir)) {
+                    let hurt = new Audio("audio/413175__micahlg__male_hurt10.ogg")
+                    hurt.play()
                     dmgCD = true
                     if (Math.random() * 100 >= this.attributes.dodge)
                         this.hp.current -= enemy.damage * (1 + this.attributes.armor / 100)
@@ -119,6 +121,7 @@ class Sprite {
                             this.opacity = 1
                             await new Promise(r => setTimeout(r, 1000))
                             dmgCD = false
+                            
                         }
                     }
                     );
@@ -128,6 +131,8 @@ class Sprite {
             for (let i = 0; i < enemy_projectiles.length; i++) {
                 let projectile = enemy_projectiles[i]
                 if (getCollision(this, projectile)) {
+                    let hurt = new Audio("audio/413175__micahlg__male_hurt10.ogg")
+                    hurt.play()
                     dmgCD = true
                     if (Math.random() * 100 >= this.attributes.dodge) {
                         this.hp.current -= projectile.attributes.damage * (1 + this.attributes.armor / 100);
@@ -242,6 +247,7 @@ class EnemyMelee extends Sprite {
 
     }
     attack = () => {
+        
         this.onCooldown = true;
         this.movable = false
         gsap.to(this, {
@@ -349,6 +355,7 @@ class EnemyRanged extends EnemyMelee {
         this.move = true
     }
     rAttack = async () => {
+        let audio = new Audio("audio/366808__gidion__owi-spit.wav")
         this.isAttacking = true
         //Attack logic here
         var shot = new Sprite({
@@ -439,6 +446,7 @@ class Boss extends Sprite {
             case 2:
                     this.count = 0
                     if(!this.isAttacking){
+                        spit_audio.play()
                         this.ranged_Attack()
                         this.amount++
                     }
@@ -455,6 +463,8 @@ class Boss extends Sprite {
         this.isAttacking = true
         switch (this.attack_state){
             case 0:
+                let jump_audio = new Audio("audio/394416__inspectorj__bamboo-swing-a3.wav")
+                jump_audio.play()
                 this.animate  = false
                 gsap.to(this.position, {
                     y: -100,
@@ -472,16 +482,19 @@ class Boss extends Sprite {
                 
                 castShadow = true;
                 if(castShadow){
-                    await new Promise(r => setTimeout(r, 1000))
+                    await new Promise(r => setTimeout(r, 500))
                     this.attack_state = 2
                 }
                 
             case 2:
+                    let crash_audio = new Audio("audio/649191__ayadrevis__explosion.ogg")
+                    crash_audio.play()
                     gsap.to(this.position, {
                         x: shadow.position.x,
                         y: shadow.position.y +100,
-                        duration: 1
+                        duration: 0.5
                     })
+                    bossInAir = false
                     await new Promise(r => setTimeout(r, 1000))
                     this.attack_state = 3
                     castShadow = false
@@ -491,7 +504,7 @@ class Boss extends Sprite {
                     y: 100,
                     duration: 1
                 })
-                bossInAir = false
+                
                 await new Promise(r => setTimeout(r, 1000))
                 this.isAttacking = false
                 this.attack_state = 0
@@ -509,6 +522,7 @@ class Boss extends Sprite {
             if (this.attack === 0){
                 this.attack = 1
                 for(let i = 0; i <= 8; i++) {
+                
                 shots.push(new Sprite({
                 position: {
                     x: this.position.x,
@@ -554,7 +568,7 @@ class Boss extends Sprite {
             
         }
 }
-
+let buy_sound = new Audio("audio/337500__eardeer__blub_short_2.wav")
 
 class Item {
     constructor({
@@ -579,7 +593,8 @@ class Item {
         price,
         position = { x: 0, y: 0 },
         isAttacking = false,
-        onCooldown = false
+        onCooldown = false,
+        audio
     }) {
         this.frames = frames
         this.projectile = projectile
@@ -592,6 +607,7 @@ class Item {
         this.position = position
         this.isAttacking = isAttacking
         this.onCooldown = onCooldown
+        this.audio = audio
     }
     draw() {
         c.drawImage(this.image, this.position.x, this.position.y);
@@ -606,6 +622,8 @@ class Item {
         }
     }
     attack_melee = (obj, i) => {
+        let shot_audio = new Audio(this.audio)
+        shot_audio.play()
         this.onCooldown = true;
         this.isAttacking = true;
         gsap.to(this.position, {
@@ -630,6 +648,9 @@ class Item {
         })
     }
     attack_ranged = (obj, i) => {
+        let shot_audio = new Audio(this.audio)
+        if (this.name === "Slingshot") shot_audio.volume = 0.5
+        shot_audio.play()
         this.onCooldown = true;
         this.isAttacking = true;
         var projectile = new Sprite({
@@ -651,6 +672,7 @@ class Item {
 
         projectiles.push(projectile)
         var index = projectiles.find(element => element === projectile)
+        
         gsap.to(projectile.position, {
             x: obj.position.x,
             y: obj.position.y,
@@ -669,6 +691,7 @@ class Item {
         })
     }
     buyItem = () => {
+        buy_sound.play()
         player.money -= this.price
         if (this.type === "weapon-melee" || this.type === "weapon-ranged") {
             if (ownedWeapons.length < 6) {

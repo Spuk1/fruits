@@ -1,7 +1,7 @@
 const enemies = []
 let time
 let bossfight = false
-
+let spit_audio = new Audio("audio/366808__gidion__owi-spit.wav")
 
 const spawnEnemyEmby = (amount) => {
     for(i = 0; i<amount;i++) {
@@ -117,12 +117,12 @@ const lifeReg = () => {
 }
 
 const initWave = () => {
+    background_audio.play()
     moving = true
     document.getElementById("parent").appendChild(moneyEle)
     moneyEle.style.right = "90%"
     time = 0;
     if (currentWave === 1) {
-    player.money = 1000
     player.hp.max = 20
     }
     player.hp.current = player.hp.max
@@ -193,6 +193,8 @@ const wave = async(diff) => {
         document.getElementById("menu").style.display = "inline-block"
         currentWave += 1
     }
+    background_audio.pause()
+    background_audio.currentTime = 0
 }
 
 
