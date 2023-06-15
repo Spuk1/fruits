@@ -5,14 +5,14 @@ const fruitpick = () => {
     name: "Fruitpick",
     image: {src: "assets/fruitpick.png"},
     attributes: {
-        damage: 10,
+        damage: 8,
         attackSpeed: 500,
         lifesteal:1,
         range: 200
     },
     type: "weapon-melee",
     audio: "audio/413496__inspectorj__stab-metal-knife-in-lettuce-a.wav",
-    price: 22,
+    price: 30,
 })}
 
 const flyswatter = () => {
@@ -28,7 +28,7 @@ const flyswatter = () => {
         range: 300
     },
     type: "weapon-melee",
-    price: 28,
+    price: 30,
     audio: "audio/394416__inspectorj__bamboo-swing-a3.wav"
 })}
 
@@ -39,7 +39,7 @@ const Spray = () => {
     projectile: "assets/Insektenspray_Munition.png",
     frames:{max:4},
     attributes: {
-        damage: 5,
+        damage: 4,
         attackSpeed: 1000,
         Speed: +3,
         rangedDmg: +1,
@@ -59,7 +59,7 @@ const Slingshot = () => {
     attributes: {
         damage: 8,
         attackSpeed: 2000,
-        rangedDmg: +3,
+        rangedDmg: +2,
         hp:3,
         range:1000
     },
@@ -86,7 +86,7 @@ const SchwiftyBoots = new Item({
     name: "Schwifty Boots",
     image:{src:"assets/boots.png"},
     attributes: {
-        Speed: +6,
+        Speed: +4,
         hp:-3,
         meleeDmg:-1,
         dodge: +10

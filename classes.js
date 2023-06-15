@@ -612,7 +612,7 @@ class Item {
     draw() {
         c.drawImage(this.image, this.position.x, this.position.y);
     }
-    getEnemyDist = (obj, i) => {
+    getEnemyDist = async(obj, i) => {
         let enemyDistance = Math.sqrt(Math.pow((player.position.x - obj.position.x), 2) + Math.pow((player.position.y - obj.position.y), 2));
         if (enemyDistance < this.attributes.range && !this.onCooldown) {
             if (this.type === "weapon-melee")
@@ -621,7 +621,7 @@ class Item {
                 this.attack_ranged(obj, i)
         }
     }
-    attack_melee = (obj, i) => {
+    attack_melee = async(obj, i) => {
         let shot_audio = new Audio(this.audio)
         shot_audio.play()
         this.onCooldown = true;
@@ -647,13 +647,13 @@ class Item {
             }
         })
     }
-    attack_ranged = (obj, i) => {
+    attack_ranged = async(obj, i) => {
         let shot_audio = new Audio(this.audio)
         if (this.name === "Slingshot") shot_audio.volume = 0.5
         shot_audio.play()
         this.onCooldown = true;
         this.isAttacking = true;
-        var projectile = new Sprite({
+        let projectile = new Sprite({
             position: {
                 x: this.position.x,
                 y: this.position.y
@@ -674,8 +674,8 @@ class Item {
         var index = projectiles.find(element => element === projectile)
         
         gsap.to(projectile.position, {
-            x: obj.position.x,
-            y: obj.position.y,
+            x: obj.position.x -25,
+            y: obj.position.y +15,
             onComplete: async () => {
                 // Enemy gets hit
                 projectiles.splice(index, 1);

@@ -7,7 +7,9 @@ var roundTime = 20
 var currentWave = 1
 var rerollcount = 0
 var rerollPrice = 7
-
+let ongoing = false
+let bossfight = false
+const enemies = []
 
 
 
@@ -110,6 +112,26 @@ const player = new Sprite({
     },
 })
 
+const boss_obj = new Boss({
+    position:{
+        x: canvas.width/2 -100,
+        y: 100
+    },
+    sprites: {
+        left:"images/hand_left.png",
+        right:"images/hand_right.png"
+    },
+    image: {
+        src: "images/hand_left.png"
+    },
+    frames: {
+        max:4,
+        hold:8
+    },
+    animate: false,
+    hp: 5,
+    movable: false
+})
 
 
 //Add Event listener Movement
@@ -171,18 +193,13 @@ const attack = async() => {
     
     
     }
-    enemies.forEach(enemy => {
-        ownedWeapons.forEach((weapon, i) => {
-            weapon.getEnemyDist(enemy, i)
-        })
-    })
-
-    /*
-    ownedWeapons.forEach((weapon,i) => {
-        enemies.forEach(enemy => {
+    
+    ownedWeapons.forEach(async (weapon) => {
+        await new Promise(r => setTimeout(r, 1000))
+        enemies.forEach((enemy, i) => {
             weapon.getEnemyDist(enemy,i)
     })
-});*/
+})
 }
 
 var isDead = false
@@ -209,7 +226,31 @@ const death = () => {
     }
 }
 
-const checkHealth = (obj, i) => {
+
+const you_win = () => {
+        roundTime = 1000
+        moving = false
+        const deathHeader = document.createElement("h1")
+        deathHeader.id = "deathHeader"
+        deathHeader.innerHTML = "You Won!"
+        document.getElementById("parent").appendChild(deathHeader)
+        const playAgainButton = document.createElement("a")
+        playAgainButton.innerHTML = "PlayAgain"
+        playAgainButton.id = "PlayAgainButton"
+        playAgainButton.href = "./game.html"
+        document.getElementById("parent").appendChild(playAgainButton)
+        const mainMenu = document.createElement("a")
+        mainMenu.innerHTML = "Menu"
+        mainMenu.id = "MainMenu"
+        mainMenu.href = "./index.html"
+        document.getElementById("parent").appendChild(mainMenu)
+        isDead = true
+        enemies.splice(0, enemies.length)
+
+}
+
+
+const checkHealth = async(obj, i) => {
     gsap.to(obj,{
         opacity: 0.7,
         duration:0.1,
@@ -221,8 +262,7 @@ const checkHealth = (obj, i) => {
         }
     })
     if (obj.hp <= 0){
-        var index = enemies.find(element => element === obj)
-        enemies.splice(index,1)
+        enemies.splice(i,1)
         player.money += 10
     }
 }
@@ -250,7 +290,8 @@ const animate = async() => {
     window.requestAnimationFrame(animate);
     background.draw();
     if(currentWave === 5) {
-        document.getElementById("Boss_Health").style.width = enemies[0].hp/1000*100 + "%";
+        document.getElementById("Boss_Health").style.width = boss_obj.hp/1000*100 + "%";
+        if(boss_obj.hp <= 0) you_win()
         if(castShadow){
             shadow.draw()
         }
@@ -286,11 +327,12 @@ const animate = async() => {
 
     }
     //draw Enemies
+    if(ongoing){
     for(let i=0;i<enemies.length;i++){
         enemies[i].draw();
         enemies[i].enemyAI();
     }
-    
+    }
  
    
     for(i=0;i<ownedWeapons.length;i++){
@@ -314,7 +356,7 @@ const animate = async() => {
         if(sprite.frames.val === sprite.frames.max -1) sprite.animate = false;
     })
     player.recieveDmg()
-    if(!bossfight){
+    if(!bossfight || !isDead){
     moving = true;
     if(!bossInAir)
         attack();

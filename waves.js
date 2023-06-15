@@ -1,6 +1,5 @@
-const enemies = []
 let time
-let bossfight = false
+
 let spit_audio = new Audio("audio/366808__gidion__owi-spit.wav")
 
 const spawnEnemyEmby = (amount) => {
@@ -83,32 +82,7 @@ const spawnEnemyWorm = (amount) => {
     }
 }
 
-const spawnBoss = (amount) => {
-    for(i = 0; i<amount;i++) {
-        enemies.push(
-            new Boss({
-                position:{
-                    x: canvas.width/2 -100,
-                    y: 100
-                },
-                sprites: {
-                    left:"images/hand_left.png",
-                    right:"images/hand_right.png"
-                },
-                image: {
-                    src: "images/hand_left.png"
-                },
-                frames: {
-                    max:4,
-                    hold:8
-                },
-                animate: false,
-                hp: 1000,
-                movable: false
-            })
-        )
-    }
-}
+
 
 const lifeReg = () => {
     if((player.hp.current + player.attributes.hpregen/5) < player.hp.max){
@@ -132,6 +106,7 @@ const initWave = () => {
 
 
 const wave = async(diff) => {
+    ongoing = true
     initWave()
     while(time <= roundTime && !isDead) {
         switch (currentWave){
@@ -162,7 +137,7 @@ const wave = async(diff) => {
                 if(enemies.length === 0 && time === 0 ){
                 document.getElementById("Boss_Healthbar").style.display = "block"
                 bossfight = true;
-                spawnBoss(1);
+                enemies.push(boss_obj)
                 gsap.to(canvas, {
                     opacity: 0.5,
                     yoyo: true,
@@ -195,6 +170,7 @@ const wave = async(diff) => {
     }
     background_audio.pause()
     background_audio.currentTime = 0
+    ongoing = false
 }
 
 
