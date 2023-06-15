@@ -129,7 +129,7 @@ const boss_obj = new Boss({
         hold:8
     },
     animate: false,
-    hp: 5,
+    hp: 1000,
     movable: false
 })
 
@@ -194,8 +194,7 @@ const attack = async() => {
     
     }
     
-    ownedWeapons.forEach(async (weapon) => {
-        await new Promise(r => setTimeout(r, 1000))
+    ownedWeapons.forEach((weapon) => {
         enemies.forEach((enemy, i) => {
             weapon.getEnemyDist(enemy,i)
     })
@@ -204,7 +203,7 @@ const attack = async() => {
 
 var isDead = false
 const death = () => {
-    if(player.hp.current <= 0 && !isDead) {
+    if(player.hp.current <= 0.5 && !isDead) {
         roundTime = 1000
         moving = false
         const deathHeader = document.createElement("h1")
@@ -261,10 +260,11 @@ const checkHealth = async(obj, i) => {
             })
         }
     })
-    if (obj.hp <= 0){
+    if (obj.hp <= 0 && enemies[i] === obj){
         enemies.splice(i,1)
         player.money += 10
     }
+    await new Promise(r => setTimeout(r, 100))
 }
 const moneyEle = document.createElement("h1")
 moneyEle.id = "money"
@@ -284,7 +284,7 @@ let moving = true
 let background = arenas[Math.floor(Math.random()*arenas.length)]
 
 var background_audio = new Audio("audio/X2Download.app - Power Punch by 2050 - Powerful (320 kbps).mp3")
-background_audio.volume = 0.2
+background_audio.volume = 0.4
 
 const animate = async() => {
     window.requestAnimationFrame(animate);
@@ -356,11 +356,11 @@ const animate = async() => {
         if(sprite.frames.val === sprite.frames.max -1) sprite.animate = false;
     })
     player.recieveDmg()
-    if(!bossfight || !isDead){
-    moving = true;
+    if(!bossfight){
+        moving = true;
     if(!bossInAir)
         attack();
-}else {
+}else if (isDead || bossfight){
     moving = false
     
 }
